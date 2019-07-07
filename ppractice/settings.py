@@ -38,6 +38,9 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'Index',
+    'ckeditor',
+    'ckeditor_uploader',
 ]
 
 MIDDLEWARE = [
@@ -55,7 +58,7 @@ ROOT_URLCONF = 'ppractice.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [os.path.join(BASE_DIR, 'templates')],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -104,9 +107,9 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/2.2/topics/i18n/
 
-LANGUAGE_CODE = 'en-us'
+LANGUAGE_CODE = 'zh-hans'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'Asia/ShangHai'
 
 USE_I18N = True
 
@@ -118,4 +121,44 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/2.2/howto/static-files/
 
+#设置静态文件目录和名称
 STATIC_URL = '/static/'
+
+#设置静态文件夹目录的路径
+STATICFILES_DIRS = (
+    os.path.join(BASE_DIR, 'static'),
+)
+# 设置文件上传路径，图片上传、文件上传都会存放在此目录里
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+
+
+CKEDITOR_UPLOAD_PATH = 'upload/'
+
+# 富文本编辑器配置
+CKEDITOR_CONFIGS = {
+    # 将这份配置命名为 my_config
+    'ck': {
+        'skin': 'moono-lisa',
+        'toolbar_Basic': [
+            ['Source', '-', 'Bold', 'Italic']
+        ],
+        'toolbar_Full': [
+            ['Styles', 'Format', 'Bold', 'Italic', 'Underline', 'Strike', 'SpellChecker', 'Undo', 'Redo'],
+            ['Link', 'Unlink', 'Anchor'],
+            ['Image', 'Flash', 'Table', 'HorizontalRule'],
+            ['TextColor', 'BGColor'],
+            ['Smiley', 'SpecialChar'],
+            # 在工具栏中添加该功能的按钮
+            ['CodeSnippet'], ['Source'],
+
+        ],
+        'toolbar': 'Full',
+        'height': 291,
+        'width': 835,
+        'filebrowserWindowWidth': 940,
+        'filebrowserWindowHeight': 725,
+        # 添加的插件
+        'extraPlugins': 'codesnippet',
+    }
+}

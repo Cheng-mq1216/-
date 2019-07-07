@@ -40,7 +40,7 @@ class Category(models.Model):
 class Leave(models.Model):
     time = models.DateTimeField(auto_now_add=True, verbose_name="时间")
     content = models.CharField(max_length=128, verbose_name="内容")
-    user = models.ForeignKey(to='Users')
+    user = models.ForeignKey(to='Users', on_delete=models.CASCADE)
 
     def __str__(self):
         return self.user.username
