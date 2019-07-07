@@ -8,21 +8,22 @@
 </head>
 
 <body>
-    <form action="">
+    <form action="/register/" method="post">
+        {% csrf_token %}
         <div id="register">
             <div class="container">
                 <label for="">用 &nbsp户&nbsp名：</label>
-                <input type="text" name="" id="">
+                <input type="text" name="username" id="">
                 <p>
                     <label for="">密&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp码：</label>
-                    <input type="password" name="" id="">
+                    <input type="password" name="password" id="">
                 </p>
                 <p>
                     <label for="">重复密码：</label>
-                    <input type="password" name="" id="">
+                    <input type="password" name="password1" id="">
                 </p>
                 <p>
-                    <input type="button" value="注册">
+                    <input type="submit" value="注册">
                 </p>
             </div>
         </div>
