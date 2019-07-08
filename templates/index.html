@@ -19,60 +19,74 @@
         </div>
         {% empty %}
 
-        <div class="box">
+        <<<<<<< HEAD <div class="box">
             <div class="up">
                 <h3>title</h3>
                 <span>user1</span>
-                <span>time1</span>
-            </div>
-            <div class="down">
-                <span>这是一篇关于如何使用该平台的说明文章</span>
-                <p><a href="">继续阅读</a></p>
-            </div>
-        </div>
+                <span>time1</span> =======
+                <div id="article_list">
+                    <div class="container">
+                        {% for i in articles %}
+                        <div class="box">
+                            <div class="up">
+                                <h3>{{i.title}}</h3>
+                                <span>{{i.category.name}}</span>
+                                <span>{{i.time}}</span>
+                            </div>
+                            <div class="down">
+                                <span>{{i.content}}</span>
+                                <p><a href="">继续阅读</a></p>
+                            </div>
+                            >>>>>>> 3694bc8b35b0a01841ffcc482788dfddf9acd259
+                        </div>
+                        <div class="down">
+                            <span>这是一篇关于如何使用该平台的说明文章</span>
+                            <p><a href="">继续阅读</a></p>
+                        </div>
+                    </div>
 
-        <div class="box">
-            <div class="up">
-                <h3>title</h3>
-                <span>user1</span>
-                <span>time1</span>
-            </div>
-            <div class="down">
-                <span>这是一篇关于如何使用该平台的说明文章</span>
-                <p><a href="">继续阅读</a></p>
-            </div>
-        </div>
+                    <div class="box">
+                        <div class="up">
+                            <h3>title</h3>
+                            <span>user1</span>
+                            <span>time1</span>
+                        </div>
+                        <div class="down">
+                            <span>这是一篇关于如何使用该平台的说明文章</span>
+                            <p><a href="">继续阅读</a></p>
+                        </div>
+                    </div>
 
-        <div class="box">
-            <div class="up">
-                <h3>title</h3>
-                <span>user1</span>
-                <span>time1</span>
-            </div>
-            <div class="down">
-                <span>这是一篇关于如何使用该平台的说明文章</span>
-                <p><a href="">继续阅读</a></p>
-            </div>
-        </div>
+                    <div class="box">
+                        <div class="up">
+                            <h3>title</h3>
+                            <span>user1</span>
+                            <span>time1</span>
+                        </div>
+                        <div class="down">
+                            <span>这是一篇关于如何使用该平台的说明文章</span>
+                            <p><a href="">继续阅读</a></p>
+                        </div>
+                    </div>
 
-        <div class="box">
-            <div class="up">
-                <h3>title</h3>
-                <span>user1</span>
-                <span>time1</span>
+                    <div class="box">
+                        <div class="up">
+                            <h3>title</h3>
+                            <span>user1</span>
+                            <span>time1</span>
+                        </div>
+                        <div class="down">
+                            <span>这是一篇关于如何使用该平台的说明文章</span>
+                            <p><a href="">继续阅读</a></p>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
             </div>
-            <div class="down">
-                <span>这是一篇关于如何使用该平台的说明文章</span>
-                <p><a href="">继续阅读</a></p>
-            </div>
-        </div>
-        {% endfor %}
-    </div>
-</div>
-<!-- 文章列表结束 -->
+            <!-- 文章列表结束 -->
 
-<!--分页开始-->
-<!-- <div id="page">
+            <!--分页开始-->
+            <!-- <div id="page">
         <div class="container">
             <ul>
                 <li>
@@ -100,5 +114,5 @@
             </ul>
         </div>
     </div> -->
-<!--分页结束-->
-{% endblock %}
+            <!--分页结束-->
+            {% endblock %}
