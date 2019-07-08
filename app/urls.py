@@ -19,8 +19,8 @@ from django.urls import path
 from django.conf.urls import url, include
 from django.views.static import serve
 
-from ppractice import settings
-from Index import views
+from . import settings
+from .Index import views
 
 urlpatterns = [
     path('admin/', admin.site.urls),

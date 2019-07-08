@@ -29,10 +29,13 @@ if [ ! -d production-practice ]; then
 fi
 
 cd production-practice
-git checkout origin/deploy
+git checkout deploy
 git pull
-mv ../.env .
-docker-compose up -d
+mv ../.env . -f
+
+docker-compose down 
+docker-compose up -d --build
+exit
 __EOF__  
 
 echo '* * * 部署完毕 * * *'
