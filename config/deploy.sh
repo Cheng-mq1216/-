@@ -29,7 +29,7 @@ if [ ! -d production-practice ]; then
 fi
 
 cd production-practice
-git checkout deploy
+git checkout master
 git pull
 mv ../.env . -f
 

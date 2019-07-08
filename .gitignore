@@ -13,6 +13,9 @@ backend
 data
 
 /static
+media
+upload
+
 # C extensions
 *.so
 
