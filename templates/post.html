@@ -1,45 +1,17 @@
-<!DOCTYPE html>
-<html>
-
-<head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>发帖</title>
-</head>
-
-<body>
-    <!-- 头部开始 -->
-    <div id="header">
-        <div class="container">
-            <div class="left">
-                <h2>平台</h2>
-            </div>
-            <div class="center">
-                <ul>
-                    <li><a href="index.html">首页</a></li>
-                    <li><a href="post.html">发帖</a></li>
-                    <li><a href="user.html">用户</a></li>
-                </ul>
-            </div>
-            <div class="left">
-                <span>退出</span>
-            </div>
-        </div>
+{% extends 'base.html' %} {% block title %}
+<title>发帖</title>
+{% endblock %} {% block main %}
+<div id="post">
+    <div class="container">
+        <label for="">标题：</label>
+        <input type="text">
+        <p>
+            <label for="">内容：</label>
+            <input type="textarea" name="" id="">
+        </p>
+        <p>
+            <input type="submit" name="" id="" value="发布">
+        </p>
     </div>
-    <!-- 头部结束 -->
-    <div id="post">
-        <div class="container">
-            <label for="">标题：</label>
-            <input type="text">
-            <p>
-                <label for="">内容：</label>
-                <input type="textarea" name="" id="">
-            </p>
-            <p>
-                <input type="submit" name="" id="" value="发布">
-            </p>
-        </div>
-    </div>
-</body>
-
-</html>
+</div>
+{% endblock %}

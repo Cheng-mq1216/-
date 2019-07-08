@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"> {% block title %} {% endblock %}
+</head>
+
+<body>
+    <!-- 头部开始 -->
+    <div id="header">
+        <div class="container">
+            <div class="left">
+                <h2>平台</h2>
+            </div>
+            <div class="center">
+                <ul>
+                    <li><a href="/index/">首页</a></li>
+                    <li><a href="/post/">发帖</a></li>
+                    <li><a href="/user/">用户</a></li>
+                </ul>
+            </div>
+            <div class="left">
+                <span>退出</span>
+            </div>
+        </div>
+    </div>
+    <!-- 头部结束 -->
+    {% block main %} {% endblock %}
+
+</body>
+
+</html>

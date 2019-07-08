@@ -1,40 +1,12 @@
-<!DOCTYPE html>
-<html>
-
-<head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>用户详情</title>
-</head>
-
-<body>
-    <!-- 头部开始 -->
-    <div id="header">
-        <div class="container">
-            <div class="left">
-                <h2>平台</h2>
-            </div>
-            <div class="center">
-                <ul>
-                    <li><a href="index.html">首页</a></li>
-                    <li><a href="post.html">发帖</a></li>
-                    <li><a href="user.html">用户</a></li>
-                </ul>
-            </div>
-            <div class="left">
-                <span>退出</span>
-            </div>
-        </div>
+{% extends 'base.html' %} {% block title %}
+<title>用户</title>
+{% endblock %} {% block main %}
+<!-- 用户项目开始 -->
+<div id="check">
+    <div class="container">
+        <label for="">用户名：</label>
+        <span>user1</span>
     </div>
-    <!-- 头部结束 -->
-    <!-- 用户项目开始 -->
-    <div id="check">
-        <div class="container">
-            <label for="">用户名：</label>
-            <span>user1</span>
-        </div>
-    </div>
-    <!-- 用户项目结束 -->
-</body>
-
-</html>
+</div>
+<!-- 用户项目结束 -->
+{% endblock %}
