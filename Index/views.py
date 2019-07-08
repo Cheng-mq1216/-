@@ -40,7 +40,11 @@ def leave(request):
 
 def post(request):
     if request.method == 'POST':
-        pass
+        title = request.POST.get("title")
+        content = request.POST.get("content")
+        ret = Users.objects.filter(title=title,content=content)
+        if ret:
+             return redirect('/index/')
     return render(request, 'post.html')
 
 def login(request):
@@ -60,6 +64,9 @@ def login(request):
             return redirect('/index/')
 
     return render(request, 'login.html')
+
+def user(request):
+      return render(request, 'user.html')
 
 
 # 注册视图函数
