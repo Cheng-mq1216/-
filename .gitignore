@@ -3,9 +3,16 @@ __pycache__/
 *.py[cod]
 *$py.class
 
+# editor
 .vscode
 .idea
 
+# deploy
+.env
+backend
+data
+
+/static
 # C extensions
 *.so
 
