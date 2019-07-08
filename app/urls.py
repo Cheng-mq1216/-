@@ -16,6 +16,21 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 
+from django.conf.urls import url, include
+from django.views.static import serve
+
+from ppractice import settings
+from Index import views
+
 urlpatterns = [
     path('admin/', admin.site.urls),
+    url(r'^$', views.index),
+    url(r'^index/', views.index),
+    url(r'^details/', views.details),
+    url(r'^user/', views.user),
+    url(r'^register/', views.register),
+    url(r'^login/', views.login),
+    url(r'^post/',views.post),
+    url(r'^media/(?P<path>.*)$', serve, {'document_root': settings.MEDIA_ROOT}),
+    url(r'^ckeditor/', include('ckeditor_uploader.urls')),
 ]
