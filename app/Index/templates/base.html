@@ -3,9 +3,7 @@
 
 <head>
     <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge"> 
-    {% block title %} 
-    {% endblock %}
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"> {% block title %} {% endblock %}
 </head>
 
 <body>
@@ -17,14 +15,20 @@
             </div>
             <div class="center">
                 <ul>
+                    {% if status %}
                     <li><a href="/index/">首页</a></li>
                     <li><a href="/post/">发帖</a></li>
                     <li><a href="/user/">用户</a></li>
+                    <li><a href="/logout/">退出</a></li>
+                    {% else %}
+                    <li><a href="/index/">首页</a></li>
+                    <li><a href="/login/">登录</a></li>
+                    {% endif %}
                 </ul>
             </div>
-            <div class="left">
+            <!-- <div class="left">
                 <span>退出</span>
-            </div>
+            </div> -->
         </div>
     </div>
     <!-- 头部结束 -->

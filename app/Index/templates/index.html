@@ -11,9 +11,14 @@
                 <h3>{{i.title}}</h3>
                 <span>{{i.category}}</span>
                 <span>{{i.time}}</span>
+                <p><label for="">用户：</label>
+                    <a href=""><span>{{i.user}}</span></a>
+
+                </p>
+
             </div>
             <div class="down">
-                <span>{{i.content}}</span>
+                {{i.content | safe}}
                 <a href="/details/?id={{ i.id}}">继续阅读</a>
             </div>
         </div>

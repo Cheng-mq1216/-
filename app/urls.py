@@ -30,6 +30,7 @@ urlpatterns = [
     url(r'^user/', views.user),
     url(r'^register/', views.register),
     url(r'^login/', views.login),
+    url(r'^logout/', views.logout),
     url(r'^post/',views.post),
     url(r'^media/(?P<path>.*)$', serve, {'document_root': settings.MEDIA_ROOT}),
     url(r'^ckeditor/', include('ckeditor_uploader.urls')),

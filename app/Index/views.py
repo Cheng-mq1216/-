@@ -1,12 +1,13 @@
-from django.shortcuts import render, redirect
-from django.contrib.sessions.backends.db import SessionStore
-from django.http import HttpResponse
-# 导入分页插件包
-from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
-# 引入模型
-from .models import Articles, Users, Category
 # 加密算法包
 import hashlib
+
+# 导入分页插件包
+from django.core.paginator import EmptyPage, PageNotAnInteger, Paginator
+from django.shortcuts import redirect, render
+
+# 引入模型
+from .models import Articles, Category, Leave, Users
+
 # Create your views here.
 
 
@@ -14,6 +15,12 @@ def index(request):
     # 添加中间导航
     categorys = Category.objects.all()
     articles = Articles.objects.all()
+    # session 判断 是否登录来区分用户界面
+    user = current_log(request)
+    if user:
+        status = True
+    else:
+        status = False
     # # 分页的实现
     # p = request.GET.get('p')  # 在URL中获取当前页面数
     # paginator = Paginator(articles, 5)  # 对查询到的数据对象list进行分页，设置超过5条数据就分页
@@ -27,29 +34,58 @@ def index(request):
     return render(request, 'index.html', {
         'articles': articles,
         'categorys': categorys,
+        'status': status,
     })
 
 
 def details(request):
+    # session 判断 是否登录来区分用户界面
+    leave = Leave.objects.all()
+    number = len(leave)
+    user = current_log(request)
+    if user:
+        status = True
+    else:
+        status = False
     id = request.GET.get('id')
     print(id)
     article = Articles.objects.get(id=id)
     return render(request, 'details.html', {
-        'article': article
-    })
-
-
-def user(request):
-    return render(request, 'user.html', {
-        'user': user
+        'article': article,
+        'status': status,
+        'leave': leave,
+        # 'articles':leave,
+        'number': number,
     })
 
 
 def leave(request):
-    return render(request, 'leave.html')
+    leave = Leave.objects.all()
+    number = len(leave)
+    # 分页的实现
+    # p = request.GET.get('p')
+    # paginator = Paginator(leave, 5)
+    # try:
+    #     leave = paginator.page(p)
+    # except PageNotAnInteger:
+    #     leave = paginator.page(1)
+    # except EmptyPage:
+    #     leave = paginator.page(paginator.num_pages)
+    return render(request, 'details.html', {
+        'leave': leave,
+        # 'articles':leave,
+        'number': number
+    })
 
 
 def post(request):
+    # session 判断 是否登录来区分用户界面
+    user = current_log(request)
+    if user:
+        status = True
+    else:
+        status = False
+
     categorys = Category.objects.all()
     if request.method == 'POST':
         title = request.POST.get("title")
@@ -62,7 +98,9 @@ def post(request):
             return redirect('/index/')
     return render(request, 'post.html', {
         "categorys": categorys,
+        'status': status,
     })
+
 
 def login(request):
     # 写判断
@@ -81,16 +119,32 @@ def login(request):
         if ret:
             request.session['login'] = True
             request.session['username'] = username
+            username = request.session.get('username')
+            # #通过get方法可以获得单个对象中的属性
+            # test = Users.objects.get(username = username)
+            # print('----------------')
+            # print(test.id)
             # request.session['password'] = password
             return redirect('/index/')
         else:
             status = '错误，无法登陆'
 
-    return render(request, 'login.html', {'status':status})
+    return render(request, 'login.html', {'status': status})
+
+
+def logout(request):
+    del request.session['username']
+    return redirect('/index/')
+
 
 def user(request):
-    username = request.session.get('username')
-    return render(request, 'user.html',{'username':username})
+    user = current_log(request)
+    if user:
+        status = True
+    else:
+        status = False
+    username = user.username
+    return render(request, 'user.html', {'username': username, 'status': status})
 
 
 # 注册视图函数
@@ -122,3 +176,11 @@ def register(request):
                 return redirect('/login/')
 
     return render(request, 'register.html')
+
+# session 函数，判断用户
+
+
+def current_log(request):
+    username = request.session.get('username')
+    if username:
+        return Users.objects.get(username=username)
