@@ -1,17 +1,22 @@
 {% extends 'base.html' %} {% block title %}
 <title>发帖</title>
 {% endblock %} {% block main %}
+<form action="/post/" method="post">
+    {% csrf_token %}
 <div id="post">
     <div class="container">
         <label for="">标题：</label>
-        <input type="text">
-        <p>
-            <label for="">内容：</label>
-            <input type="textarea" name="" id="">
-        </p>
-        <p>
-            <input type="submit" name="" id="" value="发布">
-        </p>
+        <input type="text" name='title'/></br>
+        <select name='category'>
+        {% for i in categorys %}
+            <option  value="{{i.name}}">{{i.name}}</option>
+        {% endfor %}
+        </select>
+    </br>
+        <textarea name="content" id="" cols="128" rows="10"></textarea>
+        <br>
+        <input type="submit" value="提交">
     </div>
 </div>
+</form>
 {% endblock %}

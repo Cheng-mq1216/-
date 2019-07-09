@@ -39,13 +39,19 @@ def leave(request):
     return render(request, 'leave.html')
 
 def post(request):
+    categorys = Category.objects.all()
     if request.method == 'POST':
         title = request.POST.get("title")
+        category= request.POST.get("category")
+        category=Category.objects.create(name=category)
         content = request.POST.get("content")
-        ret = Users.objects.filter(title=title,content=content)
+        ret = Articles.objects.create(title=title,
+        category=category, content=content)
         if ret:
              return redirect('/index/')
-    return render(request, 'post.html')
+    return render(request, 'post.html',{
+        "categorys":categorys,
+    })
 
 def login(request):
     # 写判断
