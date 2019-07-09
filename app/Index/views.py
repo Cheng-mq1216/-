@@ -56,6 +56,7 @@ def post(request):
 def login(request):
     # 写判断
     # 去数据库查,有没有对应的用户
+    status = '未操作，无状态'
     if request.method == 'POST':
         username = request.POST.get("username")
         password = request.POST.get("password")
@@ -67,13 +68,18 @@ def login(request):
         ret = Users.objects.filter(username=username, password=password)
         print(ret)
         if ret:
+            request.session['login'] = True
+            request.session['username'] = username
+            # request.session['password'] = password
             return redirect('/index/')
+        else:
+            status = '错误，无法登陆'
 
-    return render(request, 'login.html')
+    return render(request, 'login.html', {'status':status})
 
 def user(request):
-    
-      return render(request, 'user.html')
+    username = request.session.get('username')
+    return render(request, 'user.html',{'username':username})
 
 
 # 注册视图函数
