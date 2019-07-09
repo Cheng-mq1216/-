@@ -64,7 +64,6 @@ def post(request):
         "categorys": categorys,
     })
 
-<<<<<<< HEAD
 def login(request):
     # 写判断
     # 去数据库查,有没有对应的用户
@@ -93,30 +92,6 @@ def user(request):
     username = request.session.get('username')
     return render(request, 'user.html',{'username':username})
 
-=======
-
-# def login(request):
-#     # 写判断
-#     # 去数据库查,有没有对应的用户
-#     if request.method == 'POST':
-#         username = request.POST.get("username")
-#         password = request.POST.get("password")
-#         # print(username, password)
-#         sha256 = hashlib.sha256(bytes('加一些东西', encoding='utf8') + b'lxgzhw')
-#         sha256.update(bytes(password, encoding='utf8'))
-#         password = sha256.hexdigest()
-#         # 查询
-#         ret = Users.objects.filter(username=username, password=password)
-#         print(ret)
-#         if ret:
-#             return redirect('/index/')
-def login(request):
-    m=Users.objects.get(username=request.POST['username'])
-    if m.password == request.POST['password']:
-        request.session['member_id'] = m.id
-    return render(request, 'login.html')
-
->>>>>>> 3780b2bba8455292a03e179d719e6a64793a28dd
 
 # 注册视图函数
 def register(request):
