@@ -1,4 +1,6 @@
 from django.shortcuts import render, redirect
+from django.contrib.sessions.backends.db import SessionStore
+from django.http import HttpResponse
 # 导入分页插件包
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 # 引入模型
@@ -6,6 +8,8 @@ from .models import Articles, Users, Category
 # 加密算法包
 import hashlib
 # Create your views here.
+
+
 def index(request):
     # 添加中间导航
     categorys = Category.objects.all()
@@ -35,24 +39,32 @@ def details(request):
     })
 
 
+def user(request):
+    return render(request, 'user.html', {
+        'user': user
+    })
+
+
 def leave(request):
     return render(request, 'leave.html')
+
 
 def post(request):
     categorys = Category.objects.all()
     if request.method == 'POST':
         title = request.POST.get("title")
-        category= request.POST.get("category")
-        category=Category.objects.create(name=category)
+        category = request.POST.get("category")
+        category = Category.objects.create(name=category)
         content = request.POST.get("content")
         ret = Articles.objects.create(title=title,
-        category=category, content=content)
+                                      category=category, content=content)
         if ret:
-             return redirect('/index/')
-    return render(request, 'post.html',{
-        "categorys":categorys,
+            return redirect('/index/')
+    return render(request, 'post.html', {
+        "categorys": categorys,
     })
 
+<<<<<<< HEAD
 def login(request):
     # 写判断
     # 去数据库查,有没有对应的用户
@@ -81,6 +93,30 @@ def user(request):
     username = request.session.get('username')
     return render(request, 'user.html',{'username':username})
 
+=======
+
+# def login(request):
+#     # 写判断
+#     # 去数据库查,有没有对应的用户
+#     if request.method == 'POST':
+#         username = request.POST.get("username")
+#         password = request.POST.get("password")
+#         # print(username, password)
+#         sha256 = hashlib.sha256(bytes('加一些东西', encoding='utf8') + b'lxgzhw')
+#         sha256.update(bytes(password, encoding='utf8'))
+#         password = sha256.hexdigest()
+#         # 查询
+#         ret = Users.objects.filter(username=username, password=password)
+#         print(ret)
+#         if ret:
+#             return redirect('/index/')
+def login(request):
+    m=Users.objects.get(username=request.POST['username'])
+    if m.password == request.POST['password']:
+        request.session['member_id'] = m.id
+    return render(request, 'login.html')
+
+>>>>>>> 3780b2bba8455292a03e179d719e6a64793a28dd
 
 # 注册视图函数
 def register(request):
@@ -98,7 +134,8 @@ def register(request):
         if username and password and password == password1:
             # 判断
             # print('OK')
-            sha256 = hashlib.sha256(bytes('加一些东西', encoding='utf8') + b'lxgzhw')
+            sha256 = hashlib.sha256(
+                bytes('加一些东西', encoding='utf8') + b'lxgzhw')
             sha256.update(bytes(password, encoding='utf8'))
             password = sha256.hexdigest()
             print(password)

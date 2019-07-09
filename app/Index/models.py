@@ -17,7 +17,7 @@ class Articles(models.Model):
     # img = models.ImageField(verbose_name='首图', upload_to='articles')
     title = models.CharField(max_length=24, verbose_name='标题')
     category = models.ForeignKey(to='Category', verbose_name="分类",on_delete=models.CASCADE)
-    desc = models.CharField(max_length=128, verbose_name="描述")
+    #desc = models.CharField(max_length=128, verbose_name="描述")
     # user = models.ForeignKey(to='Users', verbose_name="用户",on_delete=models.CASCADE)
     time = models.DateTimeField(auto_now_add=True, verbose_name="添加时间")
     content = RichTextUploadingField(verbose_name="内容", config_name='ck')
