@@ -12,6 +12,13 @@ https://docs.djangoproject.com/en/2.2/ref/settings/
 
 import os
 
+import logging
+
+LOG_FORMAT = "%(asctime)s - %(levelname)s - %(message)s"
+logging.basicConfig(filename='/log/django.log',
+                    level=logging.DEBUG, format=LOG_FORMAT)
+
+
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
@@ -85,15 +92,11 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'django',
-        'USER':'root',
+        'USER': 'root',
         'PASSWORD': DBPSWD,
-        'HOST':'db',
-        'PORT':'3306'
+        'HOST': 'db',
+        'PORT': '3306'
     }
-    # 'default': {
-    #     'ENGINE': 'django.db.backends.sqlite3',
-    #     'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
-    # }
 }
 
 
@@ -129,13 +132,13 @@ USE_L10N = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/2.2/howto/static-files/
 
-#设置静态文件目录和名称
-STATIC_URL = '/statics/'
+# 设置静态文件URL
+STATIC_URL = '/static/'
 
-# 在生产环境下不设置静态文件夹目录
-# STATICFILES_DIRS = (
-#     os.path.join(BASE_DIR, 'static'),
-# )
+# 设置静态文件夹目录和名称
+STATICFILES_DIRS = (
+    os.path.join(BASE_DIR, 'app', 'Index', 'static'),
+)
 
 # 静态文件部署在 /dist 见 docker-compose.yml
 STATIC_ROOT = os.path.join('/dist')
@@ -155,7 +158,8 @@ CKEDITOR_CONFIGS = {
             ['Source', '-', 'Bold', 'Italic']
         ],
         'toolbar_Full': [
-            ['Styles', 'Format', 'Bold', 'Italic', 'Underline', 'Strike', 'SpellChecker', 'Undo', 'Redo'],
+            ['Styles', 'Format', 'Bold', 'Italic', 'Underline',
+                'Strike', 'SpellChecker', 'Undo', 'Redo'],
             ['Link', 'Unlink', 'Anchor'],
             ['Image', 'Flash', 'Table', 'HorizontalRule'],
             ['TextColor', 'BGColor'],
