@@ -38,10 +38,10 @@ def details(request):
     user = current_log(request)
 
     if request.method == 'GET':
-        leave = Leave.objects.all()
-
+        # leave = Leave.objects.all()
         id = request.GET.get('id')
         article = Article.objects.get(id=id)
+        leave = Leave.objects.filter(article=article)
         return render(request, 'details.html', {
             'article': article,
             'user': user,
@@ -56,6 +56,62 @@ def details(request):
         article = Article.objects.get(id=article_id)
         Leave.objects.create(content=content, user=user, article=article)
         return redirect('/details/?id=' + article_id)
+
+# 删文章
+def article_delete(request):
+    user = current_log(request)
+
+    if request.method == 'GET':
+        id = request.GET.get('id')
+        article = Article.objects.get(id=id)
+        article.delete()
+        return redirect('/index/')
+#编辑文章
+def article_update(request):
+    user = current_log(request)
+    if request.method == 'GET':
+        id = request.GET.get('id')
+        article = Article.objects.get(id=id)
+        categorys = Category.objects.all()
+        return render(request, 'update.html', {
+            "categorys": categorys,
+            'article': article,
+        })
+    elif request.method == 'POST':
+        title = request.POST.get("title")
+        category_name = request.POST.get("category")
+        category = Category.objects.get(name=category_name)
+        content = request.POST.get("content")
+        ret = Article.objects.update(
+            title=title, category=category, content=content, user=user)
+        if ret:
+            return redirect('/index/')
+    # article = Article.objects.get(id=id)
+    # if request.method == "POST":
+    #     # 将提交的数据赋值到表单实例中
+    #     article_post_form = ArticlePostForm(data=request.POST)
+    #     # 判断提交的数据是否满足模型的要求
+    #     if article_post_form.is_valid():
+    #         # 保存新写入的 title、body 数据并保存
+    #         article.title = request.POST['title']
+    #         article.body = request.POST['body']
+    #         article.save()
+    #         # 完成后返回到修改后的文章中。需传入文章的 id 值
+    #         return redirect("article:article_detail", id=id)
+    #     # 如果数据不合法，返回错误信息
+    #     else:
+    #         return HttpResponse("表单内容有误，请重新填写。")
+
+    # # 如果用户 GET 请求获取数据
+    # else:
+    #     # 创建表单类实例
+    #     article_post_form = ArticlePostForm()
+    #     # 赋值上下文，将 article 文章对象也传递进去，以便提取旧的内容
+    #     context = { 'article': article, 'article_post_form': article_post_form }
+    #     # 将响应返回到模板中
+    #     return render(request, 'article/update.html', context)
+
+
 
 
 def post(request):
@@ -78,7 +134,8 @@ def post(request):
         content = request.POST.get("content")
         ret = Article.objects.create(
             title=title, category=category, content=content, user=user)
-        return redirect('/index/')
+        if ret:
+            return redirect('/index/')
 
 
 def login(request):
@@ -114,7 +171,8 @@ def logout(request):
 
 def user(request):
     user = current_log(request)
-    return render(request, 'user.html', {'user': user})
+    articles = Article.objects.filter(user=user)
+    return render(request, 'user.html', {'user': user,'articles':articles})
 
 
 # 注册视图函数

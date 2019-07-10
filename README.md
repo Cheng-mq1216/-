@@ -8,6 +8,10 @@ $ python manage.py migrate
 $ python manage.py createsuperuser 
 ```
 
+可以调用`python manage.py seed`生成一个管理员账户密码和一些随机的数据。
+
+调用`python manage.py flush`删除数据库中的所有数据。
+
 ### 开发运行：
 ```bash
 $ python manage.py runserver
@@ -25,8 +29,6 @@ $ python manage.py runserver
 * `MYSQL_USER` 使用的登录账号，可以为root
 * `MYSQL_PASSWORD` 登录的密码
 * `MYSQL_DATABASE` 使用的数据库名，项目的配置为django
-* `CLOUD_USERNAME` 云镜像服务器用户名称
-* `CLOUD_PASSWD` 云镜像服务器密码
 * `SERVER_NAME` 远程主机名称
 * `SERVER_IPADDR` 远程主机ip地址
 
@@ -46,6 +48,8 @@ docker-compose up -d
 ```
 docker-compose exec web python manage.py createsuperuser
 ```
+
+如果数据库中出现了迁移系统难以解决的问题，可以在项目根目录调用`config/reboot.sh`以重启数据库。注意，此时数据库中所有内容将会被删除，且需要重新添加超级用户。
 
 ### 未来的目标：
 
