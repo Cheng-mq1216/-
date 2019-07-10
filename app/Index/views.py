@@ -38,10 +38,10 @@ def details(request):
     user = current_log(request)
 
     if request.method == 'GET':
-        leave = Leave.objects.all()
-
+        # leave = Leave.objects.all()
         id = request.GET.get('id')
         article = Article.objects.get(id=id)
+        leave = Leave.objects.filter(article=article)
         return render(request, 'details.html', {
             'article': article,
             'user': user,
@@ -114,7 +114,8 @@ def logout(request):
 
 def user(request):
     user = current_log(request)
-    return render(request, 'user.html', {'user': user})
+    articles = Article.objects.filter(user=user)
+    return render(request, 'user.html', {'user': user,'articles':articles})
 
 
 # 注册视图函数

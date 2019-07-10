@@ -6,6 +6,10 @@
     <div class="container">
         <label for="">用户名：</label>
         <span>{{ user.name }}</span>
+        <p>发布的文章：</p>
+        {% for i in articles %}
+        <sapn>{{i.title}}</sapn>
+        {% endfor %}
     </div>
 </div>
 <!-- 用户项目结束 -->
