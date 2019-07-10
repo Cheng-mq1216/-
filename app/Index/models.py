@@ -16,9 +16,9 @@ class User(models.Model):
 class Article(models.Model):
     # img = models.ImageField(verbose_name='首图', upload_to='articles')
     title = models.CharField(max_length=24, verbose_name='标题')
-    category = models.ForeignKey(to='Category', verbose_name="分类",on_delete=models.CASCADE)
+    category = models.ForeignKey(to='Category', verbose_name="分类",on_delete=models.DO_NOTHING)
     #desc = models.CharField(max_length=128, verbose_name="描述")
-    user = models.ForeignKey(to='User', verbose_name="用户",on_delete=models.CASCADE)
+    user = models.ForeignKey(to='User', verbose_name="用户",on_delete=models.DO_NOTHING)
     time = models.DateTimeField(auto_now_add=True, verbose_name="添加时间")
     content = RichTextUploadingField(verbose_name="内容", config_name='ck')
 
@@ -41,8 +41,8 @@ class Category(models.Model):
 class Leave(models.Model):
     time = models.DateTimeField(auto_now_add=True, verbose_name="时间")
     content = models.CharField(max_length=128, verbose_name="内容")
-    article = models.ForeignKey(to='Article', verbose_name="文章", on_delete=models.CASCADE)
-    user = models.ForeignKey(to='User', on_delete=models.CASCADE)
+    article = models.ForeignKey(to='Article', verbose_name="文章", on_delete=models.DO_NOTHING)
+    user = models.ForeignKey(to='User', on_delete=models.DO_NOTHING)
 
     def __str__(self):
         return self.user.name

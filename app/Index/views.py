@@ -57,6 +57,15 @@ def details(request):
         Leave.objects.create(content=content, user=user, article=article)
         return redirect('/details/?id=' + article_id)
 
+# 删文章
+def article_delete(request):
+    user = current_log(request)
+
+    if request.method == 'GET':
+        id = request.GET.get('id')
+        article = Article.objects.get(id=id)
+        article.delete()
+        return redirect('/index/')
 
 def post(request):
     # session 判断 是否登录来区分用户界面

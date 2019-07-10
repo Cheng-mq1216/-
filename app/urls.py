@@ -32,6 +32,7 @@ urlpatterns = [
     url(r'^login/', views.login),
     url(r'^logout/', views.logout),
     url(r'^post/',views.post),
+    url(r'^article_delete/', views.article_delete),
     url(r'^media/(?P<path>.*)$', serve, {'document_root': settings.MEDIA_ROOT}),
     url(r'^ckeditor/', include('ckeditor_uploader.urls')),
 ]
