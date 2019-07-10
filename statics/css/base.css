@@ -1,0 +1,48 @@
+#header,
+#header .container {
+    height: 80px;
+    line-height: 120px;
+    background-color: lightblue;
+}
+
+#header {
+    width: 100%;
+    border: 2px solid lightblue;
+    box-shadow: 10px lightblue;
+    /* position: fixed; */
+    opacity: 0.9;
+    margin: 0;
+    padding: 0%;
+}
+
+#header .container {
+    display: flex;
+    justify-content: space-between;
+}
+
+#header .container .center {
+    display: flex;
+    justify-content: center;
+}
+
+#header .container .left {
+    font-style: italic;
+}
+
+#header ul {
+    display: flex;
+    justify-content: center;
+}
+
+#header ul a {
+    margin-left: 20px;
+}
+
+ul,
+li {
+    list-style: none;
+}
+
+#header ul a:hover {
+    color: gold;
+}

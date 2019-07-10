@@ -1,0 +1,25 @@
+{% extends 'base.html' %} {% block title %}
+<title>编辑文章</title>
+{% endblock %} {% block main %}
+<form action="/article_update/" method="post">
+    {% csrf_token %}
+    <div id="article_update">
+            {% if article %}
+        <div class="container">
+            <label for="">标题：</label>
+            <input type="text" name='title' value="{{article.title}}"/></br>
+            <select name='category'>
+                {% for i in categorys %}
+                <option value="{{i.name}}">{{i.name}}</option>
+                {% endfor %}
+            </select>
+            </br>
+            <textarea name="content" id="" cols="128" rows="10">{{article.content}}</textarea>
+            <br>
+            <input type="submit" value="提交">
+        </div>
+        {% endif %}
+        <span>{{ error }}</span>
+    </div>
+</form>
+{% endblock %}
