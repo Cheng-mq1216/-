@@ -130,7 +130,7 @@ USE_L10N = True
 # https://docs.djangoproject.com/en/2.2/howto/static-files/
 
 #设置静态文件目录和名称
-STATIC_URL = '/static/'
+STATIC_URL = '/statics/'
 
 # 在生产环境下不设置静态文件夹目录
 # STATICFILES_DIRS = (

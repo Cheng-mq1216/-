@@ -18,17 +18,23 @@
 <!--留言开始-->
 <div id="leacots">
     <div class="container">
-
-        <form action="">
-            <textarea name="" id="" cols="128" rows="10"></textarea>
+        {% if user %}
+        <form action="/details/" method="POST">
+            {% csrf_token %}
+            <input name="article" value="{{article.id}}" hidden />
+            <textarea name="content" cols="128" rows="10"></textarea>
             <br>
             <input type="submit" value="确定">
         </form>
+        {% else %}
+        <p> 您还没有登录，请登录后再留言。</p>
+        {% endif %}
+
         <div id="leave_list">
             <div class="container">
                 <div class="top">
                     <span>全部留言</span>
-                    <span class="number">{{ number}}</span>
+                    <span class="number">{{ leave | length }}</span>
                 </div>
                 <div class="bottom">
                     {% for i in leave %}

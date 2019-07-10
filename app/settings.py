@@ -129,11 +129,11 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/2.2/howto/static-files/
 
 #设置静态文件目录和名称
-STATIC_URL = '/static/'
+STATIC_URL = '/statics/'
 
 #设置静态文件夹目录的路径
 STATICFILES_DIRS = (
-    os.path.join(BASE_DIR, 'static'),
+    os.path.join(BASE_DIR, 'statics'),
 )
 # 设置文件上传路径，图片上传、文件上传都会存放在此目录里
 MEDIA_URL = '/media/'

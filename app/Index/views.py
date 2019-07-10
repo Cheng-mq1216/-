@@ -6,7 +6,7 @@ from django.core.paginator import EmptyPage, PageNotAnInteger, Paginator
 from django.shortcuts import redirect, render
 
 # 引入模型
-from .models import Articles, Category, Leave, Users
+from .models import Article, Category, Leave, User
 
 # Create your views here.
 
@@ -14,13 +14,10 @@ from .models import Articles, Category, Leave, Users
 def index(request):
     # 添加中间导航
     categorys = Category.objects.all()
-    articles = Articles.objects.all()
+    articles = Article.objects.all()
     # session 判断 是否登录来区分用户界面
     user = current_log(request)
-    if user:
-        status = True
-    else:
-        status = False
+
     # # 分页的实现
     # p = request.GET.get('p')  # 在URL中获取当前页面数
     # paginator = Paginator(articles, 5)  # 对查询到的数据对象list进行分页，设置超过5条数据就分页
@@ -33,103 +30,81 @@ def index(request):
 
     return render(request, 'index.html', {
         'articles': articles,
-        'categorys': categorys,
-        'status': status,
+        'user': user
     })
 
 
 def details(request):
-    # session 判断 是否登录来区分用户界面
-    leave = Leave.objects.all()
-    number = len(leave)
     user = current_log(request)
-    if user:
-        status = True
-    else:
-        status = False
-    id = request.GET.get('id')
-    print(id)
-    article = Articles.objects.get(id=id)
-    return render(request, 'details.html', {
-        'article': article,
-        'status': status,
-        'leave': leave,
-        # 'articles':leave,
-        'number': number,
-    })
 
+    if request.method == 'GET':
+        leave = Leave.objects.all()
 
-def leave(request):
-    leave = Leave.objects.all()
-    number = len(leave)
-    # 分页的实现
-    # p = request.GET.get('p')
-    # paginator = Paginator(leave, 5)
-    # try:
-    #     leave = paginator.page(p)
-    # except PageNotAnInteger:
-    #     leave = paginator.page(1)
-    # except EmptyPage:
-    #     leave = paginator.page(paginator.num_pages)
-    return render(request, 'details.html', {
-        'leave': leave,
-        # 'articles':leave,
-        'number': number
-    })
+        id = request.GET.get('id')
+        article = Article.objects.get(id=id)
+        return render(request, 'details.html', {
+            'article': article,
+            'user': user,
+            'leave': leave
+        })
+
+    if request.method == 'POST':
+        if not user:
+            return redirect('/login/')
+        content = request.POST.get("content")
+        article_id = request.POST.get("article")
+        article = Article.objects.get(id=article_id)
+        Leave.objects.create(content=content, user=user, article=article)
+        return redirect('/details/?id=' + article_id)
 
 
 def post(request):
     # session 判断 是否登录来区分用户界面
     user = current_log(request)
-    if user:
-        status = True
-    else:
-        status = False
+    if not user:
+        return redirect('/login/')
 
-    categorys = Category.objects.all()
-    if request.method == 'POST':
+    if request.method == 'GET':
+        categorys = Category.objects.all()
+        return render(request, 'post.html', {
+            "categorys": categorys,
+            'user': user,
+        })
+
+    elif request.method == 'POST':
         title = request.POST.get("title")
-        category = request.POST.get("category")
-        category = Category.objects.create(name=category)
+        category_name = request.POST.get("category")
+        category = Category.objects.get(name=category_name)
         content = request.POST.get("content")
-        ret = Articles.objects.create(title=title,
-                                      category=category, content=content)
-        if ret:
-            return redirect('/index/')
-    return render(request, 'post.html', {
-        "categorys": categorys,
-        'status': status,
-    })
+        ret = Article.objects.create(
+            title=title, category=category, content=content, user=user)
+        return redirect('/index/')
 
 
 def login(request):
-    # 写判断
-    # 去数据库查,有没有对应的用户
-    status = '未操作，无状态'
-    if request.method == 'POST':
+
+    user = current_log(request)
+    if user:
+        return redirect('/index/')
+
+    if request.method == 'GET':
+        return render(request, 'login.html')
+
+    elif request.method == 'POST':
         username = request.POST.get("username")
         password = request.POST.get("password")
-        print(username, password)
+
         sha256 = hashlib.sha256(bytes('加一些东西', encoding='utf8') + b'lxgzhw')
         sha256.update(bytes(password, encoding='utf8'))
         password = sha256.hexdigest()
-        # 查询
-        ret = Users.objects.filter(username=username, password=password)
-        print(ret)
-        if ret:
-            request.session['login'] = True
-            request.session['username'] = username
-            username = request.session.get('username')
-            # #通过get方法可以获得单个对象中的属性
-            # test = Users.objects.get(username = username)
-            # print('----------------')
-            # print(test.id)
-            # request.session['password'] = password
-            return redirect('/index/')
-        else:
-            status = '错误，无法登陆'
+        ret = User.objects.filter(name=username, password=password)
 
-    return render(request, 'login.html', {'status': status})
+        if not ret:
+            return render(request, 'login.html', {'error': '错误，无法登陆'})
+
+        # 登录成功
+        request.session['username'] = username
+        return redirect('/index/')
 
 
 def logout(request):
@@ -139,48 +114,51 @@ def logout(request):
 
 def user(request):
     user = current_log(request)
-    if user:
-        status = True
-    else:
-        status = False
-    username = user.username
-    return render(request, 'user.html', {'username': username, 'status': status})
+    return render(request, 'user.html', {'user': user})
 
 
 # 注册视图函数
 def register(request):
-    # print('aaaaaaaaa')
-    # 把前端的数据接收过来,保存到数据库
-    if request.method == 'POST':
+    if current_log(request):
+        return redirect('/index/')
+
+    if request.method == 'GET':
+        return render(request, 'register.html')
+
+    elif request.method == 'POST':
         # 获取前端数据
         username = request.POST.get('username')
         password = request.POST.get('password')
         password1 = request.POST.get('password1')
 
-        # 打印测试
-        # print(username, password, password1)
-        # 存到数据库
-        if username and password and password == password1:
-            # 判断
-            # print('OK')
+        try:
+            assert password == password1
+            if User.objects.filter(name=username):
+                raise Exception()
+        except AssertionError:
+            error = '校验错误'
+        except Exception as e:
+            error = "用户名重复！"
+        else:  # 成功
             sha256 = hashlib.sha256(
                 bytes('加一些东西', encoding='utf8') + b'lxgzhw')
             sha256.update(bytes(password, encoding='utf8'))
             password = sha256.hexdigest()
-            print(password)
-            # 保存到数据库
-            ret = Users.objects.create(username=username, password=password)
-            # print('OK')
-            if ret:
-                # 成功了
-                return redirect('/login/')
+            User.objects.create(name=username, password=password)
+            return redirect('/login/')
 
-    return render(request, 'register.html')
+        return render(request, 'register.html', {
+            "error": error
+        })
 
-# session 函数，判断用户
+        if username and password and password == password1:
+            if User.objects.filter(name=username):
+                return render(request, 'register.html', {
+                    error: "用户名重复！"
+                })
 
 
 def current_log(request):
     username = request.session.get('username')
     if username:
-        return Users.objects.get(username=username)
+        return User.objects.get(name=username)
