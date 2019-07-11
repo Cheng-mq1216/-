@@ -3,12 +3,16 @@ import hashlib
 
 # 导入分页插件包
 from django.core.paginator import EmptyPage, PageNotAnInteger, Paginator
-from django.shortcuts import redirect, render
+from django.shortcuts import redirect, render,Http404
 
 # 引入模型
 from .models import Article, Category, Leave, User
 
 # Create your views here.
+
+def login_required(request, user):
+    if current_log(request) != user:
+        raise Http404("你所访问的页面不存在") 
 
 
 def index(request):
@@ -60,18 +64,20 @@ def details(request):
 # 删文章
 def article_delete(request):
     user = current_log(request)
-
+    
     if request.method == 'GET':
         id = request.GET.get('id')
         article = Article.objects.get(id=id)
+        login_required(request, article.user)
         article.delete()
         return redirect('/index/')
+
 #编辑文章
-def article_update(request):
-    user = current_log(request)
+def article_update(request): 
     if request.method == 'GET':
         id = request.GET.get('id')
         article = Article.objects.get(id=id)
+        login_required(request, article.user)
         categorys = Category.objects.all()
         return render(request, 'update.html', {
             "categorys": categorys,
@@ -82,37 +88,15 @@ def article_update(request):
         category_name = request.POST.get("category")
         category = Category.objects.get(name=category_name)
         content = request.POST.get("content")
-        ret = Article.objects.update(
-            title=title, category=category, content=content, user=user)
-        if ret:
-            return redirect('/index/')
-    # article = Article.objects.get(id=id)
-    # if request.method == "POST":
-    #     # 将提交的数据赋值到表单实例中
-    #     article_post_form = ArticlePostForm(data=request.POST)
-    #     # 判断提交的数据是否满足模型的要求
-    #     if article_post_form.is_valid():
-    #         # 保存新写入的 title、body 数据并保存
-    #         article.title = request.POST['title']
-    #         article.body = request.POST['body']
-    #         article.save()
-    #         # 完成后返回到修改后的文章中。需传入文章的 id 值
-    #         return redirect("article:article_detail", id=id)
-    #     # 如果数据不合法，返回错误信息
-    #     else:
-    #         return HttpResponse("表单内容有误，请重新填写。")
-
-    # # 如果用户 GET 请求获取数据
-    # else:
-    #     # 创建表单类实例
-    #     article_post_form = ArticlePostForm()
-    #     # 赋值上下文，将 article 文章对象也传递进去，以便提取旧的内容
-    #     context = { 'article': article, 'article_post_form': article_post_form }
-    #     # 将响应返回到模板中
-    #     return render(request, 'article/update.html', context)
-
-
-
+        article_id = request.POST.get("article")
+        login_required(request, article.user)
+        article = Article.objects.get(id=article_id)
+        article.title = title
+        article.category = category
+        article.content = content
+        article.save()
+        
+        return redirect('/index/')
 
 def post(request):
     # session 判断 是否登录来区分用户界面

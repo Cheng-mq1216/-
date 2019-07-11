@@ -8,16 +8,18 @@
         <h3>{{article.title}}</h3>
         <p class="desc1"><span class="time">{{article.time}}</span> <span class="category">{{article.category.name}}</span></p>
         <div class="content">
-            {{article.content | safe}}
+            {{article.content}}
         </div>
     </div>
     {% endif %}
 </div>
 <!--文章结束-->
 <!-- 删除文章 -->
+{% if user == article.user %}
 <a href="/article_delete/?id={{article.id}}">删除文章</a>
 <!-- 编辑文章 -->
 <a href="/article_update/?id={{article.id}}">编辑文章</a>
+{% endif %}
 <!--留言开始-->
 <div id="leacots">
     <div class="container">

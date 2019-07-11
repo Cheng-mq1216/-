@@ -8,6 +8,7 @@
         <div class="container">
             <label for="">标题：</label>
             <input type="text" name='title' value="{{article.title}}"/></br>
+            <input name="article" value="{{article.id}}" hidden /></br>
             <select name='category'>
                 {% for i in categorys %}
                 <option value="{{i.name}}">{{i.name}}</option>
