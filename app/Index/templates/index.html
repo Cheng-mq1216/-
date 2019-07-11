@@ -25,26 +25,29 @@
 <!-- 文章列表结束 -->
 
 <!--分页开始-->
-<!-- <div id="page">
+<div id="page">
         <div class="container">
-            <ul>
+            <ul style="display: block">
                 <li>
                     {% if articles.has_previous %}
-                    <a href="?p={{ articles.previous_page_number }}">上一页</a> {% else %}
-                    <a href="javascript:;">上一页</a> {% endif %}
+                    <a href="?p={{ articles.previous_page_number }}">上一页</a> 
+                    {% else %}
+                    <a href="javascript:;">上一页</a> 
+                    {% endif %}
                 </li>
-                {% for num in articles.paginator.page_range %} {% ifequal num list.number %}
-                <li class="active"><a>{{ num }}</a></li>
-                {% else %}
-                <li><a href="?p={{ num }}">{{ num }}</a></li>
-                {% endifequal %} {% empty %}
-                <li><a>...</a></li>
-                {% endfor %} {#
-                <li><a href="">1</a></li>#} {#
-                <li><a href="">2</a></li>#} {#
-                <li><a href="">3</a></li>#} {#
-                <li><a href="">4</a></li>#} {#
-                <li><a href="">5</a></li>#}
+                    {% for num in articles.paginator.page_range %} 
+                        {% ifequal num list.number %}
+                            <li class="active"><a>{{ num }}</a></li>
+                    {% else %}
+                            <li><a href="?p={{ num }}">{{ num }}</a></li>
+                    {% endifequal %} {% empty %}
+                            <li><a>...</a></li>
+                    {% endfor %} 
+                        {#<li><a href="">1</a></li>#} 
+                        {#<li><a href="">2</a></li>#} 
+                        {#<li><a href="">3</a></li>#} 
+                        {#<li><a href="">4</a></li>#} 
+                        {#<li><a href="">5</a></li>#}
                 <li>
                     {% if articles.has_next %}
                     <a href="?p={{ articles.next_page_number }}">下一页</a> {% else %}
@@ -52,6 +55,6 @@
                 </li>
             </ul>
         </div>
-    </div> -->
-<!--分页结束-->
+    </div> 
+<!--分页结束 -->
 {% endblock %}
