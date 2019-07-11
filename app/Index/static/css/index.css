@@ -42,3 +42,8 @@ a {
     -webkit-line-clamp: 3;
     -webkit-box-orient: vertical;
 }
+
+#article-list h3 a:hover {
+    color: #148a63;
+    text-decoration: none;
+}
