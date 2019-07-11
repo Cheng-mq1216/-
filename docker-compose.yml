@@ -6,6 +6,7 @@ services:
     build: .
     volumes:
       - ./static:/dist
+      - ./log:/log
     env_file: .env
     command: ["/code/config/wait-for-it.sh", "db:3306", "--", "bash","config/boot.sh"]
   nginx:
