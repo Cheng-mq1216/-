@@ -49,7 +49,7 @@ def details(request):
         return render(request, 'details.html', {
             'article': article,
             'user': user,
-            'leave': leave
+            'leaves': leave
         })
 
     if request.method == 'POST':
@@ -60,6 +60,22 @@ def details(request):
         article = Article.objects.get(id=article_id)
         Leave.objects.create(content=content, user=user, article=article)
         return redirect('/details/?id=' + article_id)
+
+# 删除留言
+def leave_delete(request):
+    user = current_log(request)
+    
+    if request.method == 'GET':
+        id = request.GET.get('id')
+        leave = Leave.objects.get(id=id)
+
+        login_required(request, leave.user)
+        leave.delete()
+        return redirect('/details/?id=' + str(leave.article.id))
+    return render(request, 'details.html', {
+        'user': user,
+        'leaves': leave
+    })
 
 # 删文章
 def article_delete(request):

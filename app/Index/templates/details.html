@@ -39,10 +39,10 @@
             <div class="container">
                 <div class="top">
                     <span>全部留言</span>
-                    <span class="number">{{ leave | length }}</span>
+                    <span class="number">{{ leaves | length }}</span>
                 </div>
                 <div class="bottom">
-                    {% for i in leave %}
+                    {% for i in leaves %}
                     <div class="box">
                         <div class="left">
                             <img src="/media/{{i.img}}" alt="">
@@ -51,6 +51,9 @@
                             <div class="right_top">
                                 <span>{{i.user}}</span>
                                 <span>{{i.time}}</span>
+                            {% if user == i.user %}
+                            <a href="/leave_delete/?id={{i.id}}">删除留言</a>
+                            {% endif %}
                             </div>
                             <div class="right_bottom">
                                 <p>{{i.content}}</p>
