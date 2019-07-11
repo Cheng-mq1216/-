@@ -9,9 +9,11 @@
         <input type="text" class="form-control" placeholder="用户名" name='username' aria-describedby="sizing-addon2" required autofocus>
         <input type="password" class="form-control" placeholder="密码" name="password" aria-describedby="sizing-addon2" required>
         <br>
-        <input type="submit" class="btn btn-lg btn-primary " value="登录">
-        <input type="button" class="btn btn-lg btn-primary " value="前往注册" onclick="location.href=('../register/')">
-        <span>{{ error }}</span>
+        <div class="button">
+            <input type="submit" class="btn btn-lg btn-primary " value="登录">
+            <input type="button" class="btn btn-lg btn-primary " value="前往注册" onclick="location.href=('../register/')">
+        </div>
+        <p><span>{{ error }}</span></p>
     </form>
 </div>
 {% endblock %}
