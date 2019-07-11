@@ -1,0 +1,35 @@
+.articles {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+#article-list {
+    padding: 10px;
+}
+
+.article {
+    width: 50rem;
+}
+
+.article h3 {
+    text-align: center
+}
+
+.card-header p {
+    text-align: center;
+}
+
+.card-body h6 {
+    text-align: right;
+}
+
+.page {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+a {
+    color: #148a63;
+}

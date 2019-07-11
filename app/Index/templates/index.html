@@ -1,75 +1,43 @@
 {% extends 'base.html' %} {% block title %}
 <title>首页</title>
-{% endblock %} {% block main %}
+{% endblock %}{% block css %} {% load static %}
+<link rel="stylesheet" href="{% static 'css/index.css' %}"> {% endblock %} {% block main %}
 <!-- 文章列表开始 -->
 
-<div id="article_list" style="padding:10px;">
-    <div class="container" style="display: flex;
-    justify-content: center;
-    flex-wrap: wrap;">
+<div id="article-list">
+    <div class="container articles">
         {% for i in articles %}
-        <div class="card border-primary mb-3" style="width: 50rem;">
+        <div class="card mb-3 article">
             <div class="card-header">
-                <!-- <label for="">用户：</label>
-                <a href=""><span>{{i.user}}</span></a>
-                <span>{{i.category}}</span>
-                <span>{{i.time}}</span> -->
-                <h5 style="text-align:center"><a href="/details/?id={{ i.id}}">{{i.title}}</a></h5>
-                <span style="float:right">分类：{{i.category}}</span>
+                <h3><a href="/details/?id={{ i.id}}">{{i.title}}</a> <span class="badge badge-secondary">{{i.category}}</span></h3>
+                <p><a href="/user/?id={{i.user.id}}"> {{i.user}}</a><span>/</span><span>{{i.time}}</span>
+                </p>
             </div>
-            <div class="card-body text-primary">
-                <h6 class="card-title" style="margin-left: 530px">
-                    <label for="">用户：</label>
-                    <a href=""><span>{{i.user}}</span></a>
-                    <span>{{i.time}}</span>
-                </h6>
+            <div class="card-body">
                 <p class="card-text">{{i.content | safe}}</p>
             </div>
         </div>
         {% endfor %}
     </div>
-</div>
-<!-- 文章列表结束 
-    <div class="card border-primary mb-3" style="max-width: 50rem;">
-        <div class="card-header">Header</div>
-        <div class="card-body text-primary">
-            <h5 class="card-title">Primary card title</h5>
-            <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-        </div>
-    </div>
--->
 
-<!--分页开始-->
-<div id="page">
-        <div class="container">
-            <ul style="display: block">
-                <li>
-                    {% if articles.has_previous %}
-                    <a href="?p={{ articles.previous_page_number }}">上一页</a> 
-                    {% else %}
-                    <a href="javascript:;">上一页</a> 
-                    {% endif %}
-                </li>
-                    {% for num in articles.paginator.page_range %} 
-                        {% ifequal num list.number %}
-                            <li class="active"><a>{{ num }}</a></li>
-                    {% else %}
-                            <li><a href="?p={{ num }}">{{ num }}</a></li>
-                    {% endifequal %} {% empty %}
-                            <li><a>...</a></li>
-                    {% endfor %} 
-                        {#<li><a href="">1</a></li>#} 
-                        {#<li><a href="">2</a></li>#} 
-                        {#<li><a href="">3</a></li>#} 
-                        {#<li><a href="">4</a></li>#} 
-                        {#<li><a href="">5</a></li>#}
-                <li>
-                    {% if articles.has_next %}
-                    <a href="?p={{ articles.next_page_number }}">下一页</a> {% else %}
-                    <a href="javascript:;">下一页</a> {% endif %}
-                </li>
-            </ul>
-        </div>
-    </div> 
+
+    <!--分页开始-->
+
+    <nav aria-label="Page navigation example" class="page">
+        <ul class="pagination">
+            <li class="page-item">
+                {% if articles.has_previous %}
+                <a class="page-link" href="?p={{ articles.previous_page_number }}">上一页</a>{% endif %}
+            </li>
+            {% for num in articles.paginator.page_range %} {% ifequal num list.number %}
+            <li class="page-item"><a class="page-link">{{ num }}</a></li>
+            {% else %}
+            <li class="page-item"><a class="page-link" href="?p={{ num }}">{{ num }}</a></li>
+            {% endifequal %} {% endfor %} {% if articles.has_next %}
+            <a class="page-link" href="?p={{ articles.next_page_number }}">下一页</a> {% endif %}
+            </li>
+        </ul>
+    </nav>
+</div>
 <!--分页结束 -->
 {% endblock %}

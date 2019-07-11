@@ -1,0 +1,72 @@
+.jumbotron {
+    background-color: #1fa67a;
+    border-top: 1px solid #34a782;
+    margin-bottom: 0;
+    padding: 50px 0 40px;
+    border-radius: 0%;
+}
+
+.jumbotron h1 {
+    font-size: 80px;
+    letter-spacing: -2px;
+    line-height: 1;
+    margin: 0 0 15px;
+}
+
+.jumbotron-ad h1,
+.jumbotron-carousel h1 {
+    text-shadow: 4px 3px 0 #1d9d74, 9px 8px 0 rgba(0, 0, 0, 0.15);
+}
+
+.jumbotron,
+.jumbotron h1 {
+    color: #fff;
+}
+
+.jumbotron-ad p,
+.jumbotron-carousel p {
+    color: #c7e7dc;
+    text-shadow: 0 1px 0 rgba(0, 0, 0, 0.15);
+}
+
+.jumbotron p {
+    font-family: proxima-nova-sc, "Microsoft YaHei", "Helvetica Neue", Helvetica, Arial, sans-serif;
+    margin-top: 15px;
+    margin-bottom: 15px;
+    font-size: 24px;
+    line-height: 1.3;
+    font-weight: lighter;
+}
+
+article {
+    margin-top: 40px;
+}
+
+.content-underlay {
+    margin-bottom: -180px;
+    border-bottom: 1px solid #1b926c;
+    padding-bottom: 100px;
+    background-color: #1fa67a
+}
+
+.page-content {
+    background: #fff;
+    z-index: 2;
+    position: relative;
+    border-radius: 4px;
+    padding: 5px 40px 22px 40px;
+    min-height: 180px;
+    padding-top: 30px;
+}
+
+.hr {
+    position: relative;
+    text-align: center;
+    font-size: 14px;
+    z-index: 1;
+    min-height: 20px;
+}
+
+.margin-top-xl {
+    margin-top: 40px!important;
+}
