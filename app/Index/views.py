@@ -18,19 +18,18 @@ def login_required(request, user):
 def index(request):
     # 添加中间导航
     categorys = Category.objects.all()
-    articles = Article.objects.all()
+    articles = Article.objects.all().order_by("-time")
     # session 判断 是否登录来区分用户界面
     user = current_log(request)
-
-    # # 分页的实现
-    # p = request.GET.get('p')  # 在URL中获取当前页面数
-    # paginator = Paginator(articles, 5)  # 对查询到的数据对象list进行分页，设置超过5条数据就分页
-    # try:
-    #     articles = paginator.page(p)  # 获取当前页码的记录
-    # except PageNotAnInteger:
-    #     articles = paginator.page(1)  # 如果用户输入的页码不是整数时,显示第1页的内容
-    # except EmptyPage:
-    #     articles = paginator.page(paginator.num_pages)  # 如果用户输入的页数不在系统的页码列表中时,显示最后一页的内容
+    if request.method == 'GET':
+        p = request.GET.get('p')  # 在URL中获取当前页面数
+        paginator = Paginator(articles, 5)  # 对查询到的数据对象list进行分页，设置超过5条数据就分页
+        try:
+            articles = paginator.page(p)  # 获取当前页码的记录
+        except PageNotAnInteger:
+            articles = paginator.page(1)  # 如果用户输入的页码不是整数时,显示第1页的内容
+        except EmptyPage:
+            articles = paginator.page(paginator.num_pages)  # 如果用户输入的页数不在系统的页码列表中时,显示最后一页的内容
 
     return render(request, 'index.html', {
         'articles': articles,
@@ -49,7 +48,7 @@ def details(request):
         return render(request, 'details.html', {
             'article': article,
             'user': user,
-            'leave': leave
+            'leaves': leave
         })
 
     if request.method == 'POST':
@@ -60,6 +59,22 @@ def details(request):
         article = Article.objects.get(id=article_id)
         Leave.objects.create(content=content, user=user, article=article)
         return redirect('/details/?id=' + article_id)
+
+# 删除留言
+def leave_delete(request):
+    user = current_log(request)
+    
+    if request.method == 'GET':
+        id = request.GET.get('id')
+        leave = Leave.objects.get(id=id)
+
+        login_required(request, leave.user)
+        leave.delete()
+        return redirect('/details/?id=' + str(leave.article.id))
+    return render(request, 'details.html', {
+        'user': user,
+        'leaves': leave
+    })
 
 # 删文章
 def article_delete(request):
