@@ -5,43 +5,41 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge"> {% block title %} {% endblock %}
 
+    <!-- CSS -->
+    <link rel="stylesheet" href="https://cdn.bootcss.com/bootstrap/4.0.0/css/bootstrap.min.css"> {% block css %} {% endblock %}
     <!-- JS -->
     <script src="https://cdn.bootcss.com/jquery/3.2.1/jquery.slim.min.js"></script>
     <script src="https://cdn.bootcss.com/popper.js/1.12.9/umd/popper.min.js"></script>
     <script src="https://cdn.bootcss.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
-    <!-- CSS -->
-    {% load static %}
-    <link rel="stylesheet" href="https://cdn.bootcss.com/bootstrap/4.0.0/css/bootstrap.min.css">
-    <link rel="stylesheet" href="{% static 'css/base.css' %}"> {% block css %} {% endblock %}
 
 </head>
 
-<body class="text-center">
-    <!-- 头部开始 -->
-    <div id="header">
-        <div class="container">
-            <div class="left">
-                <h2>平台</h2>
-            </div>
-            <div class="center">
-                <ul>
-                    {% if user %}
-                    <li><a href="/index/">首页</a></li>
-                    <li><a href="/post/">发帖</a></li>
-                    <li><a href="/user/">用户</a></li>
-                    <li><a href="/logout/">退出</a></li>
-                    {% else %}
-                    <li><a href="/index/">首页</a></li>
-                    <li><a href="/login/">登录</a></li>
-                    <li><a href="/register/">注册</a></li>
-                    {% endif %}
-                </ul>
-            </div>
-            <!-- <div class="left">
-                <span>退出</span>
-            </div> -->
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+        <h3 class="navbar-brand">平台</h3>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarText" aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+            </button>
+        <div class="collapse navbar-collapse" id="navbarText">
+            {% if user %}
+            <ul class="navbar-nav mr-auto" style="margin-left: 82%;">
+
+                <li class="nav-item active"><a class="nav-link" href="/index/">首页<span class="sr-only">(current)</span></a>
+                </li>
+                <li class="nav-item"><a class="nav-link" href="/post/">发帖</a></li>
+                <li class="nav-item"><a class="nav-link" href="/user/">用户</a></li>
+                <li class="nav-item"><a class="nav-link" href="/logout/">退出</a></li>
+            </ul>
+            {% else %}
+            <ul class="navbar-nav mr-auto" style="margin-left: 85%">
+                <li class="nav-item active"><a class="nav-link" href="/index/">首页<span class="sr-only">(current)</span></a>
+                </li>
+                <li class="nav-item"><a class="nav-link" href="/login/">登录</a></li>
+                <li class="nav-item"><a class="nav-link" href="/register/">注册</a></li>
+                {% endif %}
+            </ul>
         </div>
-    </div>
+    </nav>
     <!-- 头部结束 -->
     {% block main %} {% endblock %}
 

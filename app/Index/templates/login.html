@@ -1,32 +1,17 @@
-<!DOCTYPE html>
-<html>
-
-<head>
-    <meta charset="utf-8">
-    <title>登录界面</title>
-
-    <!-- JS -->
-    <script src="https://cdn.bootcss.com/jquery/3.2.1/jquery.slim.min.js"></script>
-    <script src="https://cdn.bootcss.com/popper.js/1.12.9/umd/popper.min.js"></script>
-    <script src="https://cdn.bootcss.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
-    <!-- CSS -->
-    {% load static %}
-    <link rel="stylesheet" href="https://cdn.bootcss.com/bootstrap/4.0.0/css/bootstrap.min.css">
-    <link rel="stylesheet" href="{% static 'css/login.css' %}">
-
-</head>
-
-<body class="text-center">
+{% extends 'base.html' %} {% block title %}
+<title>登录界面</title>
+{% endblock %} {% block css %} {% load static %}
+<link rel="stylesheet" href="{% static 'css/login.css' %}"> {% endblock %} {% block main %}
+<div class="body">
     <form action="/login/" method='post' class="form-signin">
         {% csrf_token %}
         <h1 class="h3 mb-3 font-weight-normal">登录</h1>
         <input type="text" class="form-control" placeholder="用户名" name='username' aria-describedby="sizing-addon2" required autofocus>
         <input type="password" class="form-control" placeholder="密码" name="password" aria-describedby="sizing-addon2" required>
         <br>
-        <input type="submit" class="btn btn-lg btn-primary btn-block" name="" id="" value="登录">
-        <input type="button" class="btn btn-lg btn-primary btn-block" name="" id="" value="注册" onclick="location.href=('../register/')">
+        <input type="submit" class="btn btn-lg btn-primary " value="登录">
+        <input type="button" class="btn btn-lg btn-primary " value="前往注册" onclick="location.href=('../register/')">
         <span>{{ error }}</span>
     </form>
-</body>
-
-</html>
+</div>
+{% endblock %}

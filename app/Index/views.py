@@ -145,7 +145,7 @@ def login(request):
         return redirect('/index/')
 
     if request.method == 'GET':
-        return render(request, 'login.html')
+        return render(request, 'login.html',{'user': user})
 
     elif request.method == 'POST':
         username = request.POST.get("username")
@@ -157,7 +157,7 @@ def login(request):
         ret = User.objects.filter(name=username, password=password)
 
         if not ret:
-            return render(request, 'login.html', {'error': '错误，无法登陆'})
+            return render(request, 'login.html', {'error': '错误，无法登陆', 'user': user})
 
         # 登录成功
         request.session['username'] = username
@@ -181,7 +181,7 @@ def register(request):
         return redirect('/index/')
 
     if request.method == 'GET':
-        return render(request, 'register.html')
+        return render(request, 'register.html', {'user': user})
 
     elif request.method == 'POST':
         # 获取前端数据

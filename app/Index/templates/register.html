@@ -1,36 +1,17 @@
-<!DOCTYPE html>
-<html>
-
-<head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>注册界面</title>
-
-    <!-- JS -->
-    <script src="https://cdn.bootcss.com/jquery/3.2.1/jquery.slim.min.js"></script>
-    <script src="https://cdn.bootcss.com/popper.js/1.12.9/umd/popper.min.js"></script>
-    <script src="https://cdn.bootcss.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
-    <!-- CSS -->
-    {% load static %}
-    <link rel="stylesheet" href="https://cdn.bootcss.com/bootstrap/4.0.0/css/bootstrap.min.css">
-
-    <link rel="stylesheet" href="{% static 'css/register.css' %}">
-</head>
-
-<body class="text-center">
-    <form action="/register/" method="post" class="form-register">
+{% extends 'base.html' %} {% block title %}
+<title>注册界面</title>
+{% endblock %} {% block css %} {% load static %}
+<link rel="stylesheet" href="{% static 'css/login.css' %}">{% endblock %} {% block main %}
+<div class="body">
+    <form action="/register/" method="post" class="form-signin">
         {% csrf_token %}
-
         <h1 class="h3 mb-3 font-weight-normal">注册账号</h1>
-        <div class="container">
-
-            <input type="text" name="username" class="form-control" placeholder="用户名" required autofocus>
-            <input type="password" name="password" class="form-control" placeholder="密码" required>
-            <input type="password" name="password1" class="form-control" placeholder="重复密码" required>
-            <br>
-            <button class="btn btn-lg btn-primary btn-block" type="submit">注册</button>
-        </div>
+        <input type="text" name="username" class="form-control" placeholder="用户名" aria-describedby="sizing-addon2" required autofocus>
+        <input type="password" name="password" class="form-control" placeholder="密码" aria-describedby="sizing-addon2" required>
+        <input type="password" name="password1" class="form-control" placeholder="重复密码" aria-describedby="sizing-addon2" required>
+        <br>
+        <button class="btn btn-lg btn-primary" type="submit">确认注册</button>
+        <input type="button" class="btn btn-lg btn-primary " value="返回" onclick="location.href=('../login/')">
     </form>
-</body>
-
-</html>
+</div>
+{% endblock %}
