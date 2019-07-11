@@ -20,7 +20,9 @@
         <article class="page-content"> {{article.content}}</article>
     </div>
 
-    <div class="hr margin-top-xl"></div>
+    <div class="hr margin-top-xl">
+        <span class="hr-text text-xl text-muted">end</span>
+    </div>
 
     <!--文章结束-->
     <div class="container">
@@ -46,33 +48,27 @@
     <div class="container">
         <div class="container">
             <div class="top">
-                <span>全部留言</span>
-                <span class="number">{{ leaves | length }}</span>
+                <button type="button" class="btn bg-green">全部留言
+                <span class="badge badge-light">{{ leaves | length }}</span>
+                </button>
             </div>
-            <div class="bottom">
-                {% for i in leaves %}
-                <div class="box">
-                    <div class="left">
-                        <img src="/media/{{i.img}}" alt="">
-                    </div>
-                    <div class="right">
-                        <div class="right_top">
-                            <span>{{i.user}}</span>
-                            <span>{{i.time}}</span> {% if user == i.user %}
-                            <a href="/leave_delete/?id={{i.id}}">删除留言</a> {% endif %}
-                        </div>
-                        <div class="right_bottom">
-                            <p>{{i.content}}</p>
-                        </div>
-                    </div>
+            {% for i in leaves %}
+            <div class="card border-success mb-3">
+                <div class="card-header bg-transparent border-success">
+                    <span>{{i.time}}</span>{% if user == i.user %}
+                    <a href="/leave_delete/?id={{i.id}}">删除留言</a>{% endif %}
                 </div>
-                {% endfor %}
 
+                <div class="card-body text-success">
+                    <h5 class="card-title">{{i.user}}</h5>
+                    <p class="card-text">{{i.content}}</p>
+                </div>
             </div>
+            {% endfor %}
         </div>
     </div>
 </div>
-</div>
+
 <!--留言结束-->
 
 {% endblock %}
