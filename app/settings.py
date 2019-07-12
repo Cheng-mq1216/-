@@ -47,7 +47,6 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'app.Index',
     'mdeditor',
-    'markdown_deux',
     'debug_toolbar'
 ]
 

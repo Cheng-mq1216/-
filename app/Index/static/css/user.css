@@ -1,0 +1,37 @@
+.row {
+    width: 60%;
+    height: 400px;
+    margin-left: auto;
+    margin-right: auto;
+    background-color: white;
+    padding: 30px;
+    border-radius: 4px;
+}
+
+.list-group-item.active {
+    background-color: green;
+    border-color: gray;
+}
+
+.bgc {
+    background-color: #1fa67a;
+    height: 300px;
+    margin-bottom: -120px;
+}
+
+.list-group {
+    margin-top: 50px;
+}
+
+.col-8 {
+    background-color: white;
+    border-radius: 5px;
+}
+
+.thiscss a {
+    color: green;
+}
+
+.text {
+    text-align: center;
+}

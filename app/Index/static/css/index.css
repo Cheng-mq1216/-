@@ -33,3 +33,18 @@
 a {
     color: #148a63;
 }
+
+.card-text {
+    height: 70px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    font-family: YouYuan;
+}
+
+#article-list h3 a:hover {
+    color: #148a63;
+    text-decoration: none;
+}

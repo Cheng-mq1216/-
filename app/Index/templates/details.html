@@ -8,7 +8,7 @@
     <div class="jumbotron jumbotron-ad hidden-print">
         <div class="container">
             <h1> {{article.title}} </h1>
-            <p> {{article.user.name}} </p>
+            <p><a href="{% url 'user-info' article.author.id %}">{{ article.author.name}} </a> </p>
             <p>
                 <span> {{article.time}}</span>
                 <span class="badge badge-light">{{article.category.name}}</span>
@@ -20,7 +20,9 @@
         <article class="page-content"> {{ article.content | safe }}</article>
     </div>
 
-    <div class="hr margin-top-xl"></div>
+    <div class="hr margin-top-xl">
+        <span class="hr-text text-xl text-muted">end</span>
+    </div>
 
     <!--文章结束-->
     <div class="container">
@@ -33,14 +35,12 @@
         </form>
 
         <!-- 编辑文章 -->
-        <a href="{% url 'article-update' article.id %}">编辑文章</a>
-        {% endif %}
+        <a href="{% url 'article-update' article.id %}">编辑文章</a> {% endif %}
 
         <!--留言开始-->
         {% if user %}
         <form action="{% url 'article-detail' article.id %}" method="POST">
-            {% csrf_token %}
-            {{ form.as_p }}
+            {% csrf_token %} {{ form.as_p }}
             <input type="submit" value="提交留言" />
         </form>
         {% else %}
@@ -50,39 +50,31 @@
 
     <div class="container">
         <div class="container">
-            <div class="top">
-                <span>全部留言</span>
-                <span class="number">{{ comments | length }}</span>
-            </div>
             <div class="bottom">
-                {% for i in comments %}
-                <div class="box">
-                    <div class="left">
-                        <img src="/media/{{i.img}}" alt="">
-                    </div>
-                    <div class="right">
-                        <div class="right_top">
-                            <span>{{i.user}}</span>
-                            <span>{{i.time}}</span>
-                            {% if user == i.author %}
-                            <form action="{% url 'comment-delete' i.id %}" method="POST">
-                                {% csrf_token %}
-                                <input type="submit" value="删除留言">
-                                {% endif %}
-                            </form>
-                        </div>
-                        <div class="right_bottom">
-                            <p>{{i.content}}</p>
-                        </div>
-                    </div>
-                </div>
-                {% endfor %}
-
+                <button type="button" class="btn bg-green">全部留言
+          <span class="badge badge-light">{{ comments | length }}</span>
+        </button>
             </div>
+            {% for i in comments %}
+            <div class="card border-success mb-3">
+                <div class="card-header bg-transparent border-success">
+                    <span>{{i.time}}</span>{% if user == i.author %}
+                    <form action="{% url 'comment-delete' i.id %}" method="POST">
+                        {% csrf_token %}
+                        <input type="submit" value="删除留言"> {% endif %}
+                    </form>
+                </div>
+
+                <div class="card-body text-success">
+                    <h5 class="card-title">{{i.author}}</h5>
+                    <p class="card-text">{{i.content}}</p>
+                </div>
+            </div>
+            {% endfor %}
         </div>
     </div>
 </div>
-</div>
+
 <!--留言结束-->
 
 {% endblock %}

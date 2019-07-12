@@ -57,6 +57,8 @@ article {
     padding: 5px 40px 22px 40px;
     min-height: 180px;
     padding-top: 30px;
+    font-family: YouYuan;
+    font-size: 18px;
 }
 
 .hr {
@@ -69,4 +71,43 @@ article {
 
 .margin-top-xl {
     margin-top: 40px!important;
+}
+
+.hr .hr-text {
+    background: #f5f5f5;
+    font-family: YouYuan;
+    font-size: 27px;
+}
+
+.hr .hr-text {
+    display: inline-block;
+    padding: 0 .5em;
+}
+
+.text-muted {
+    color: #b3b3b3;
+}
+
+.top button {
+    display: flex;
+    justify-content: space-between;
+    width: 300px;
+    color: white;
+}
+
+.top span {
+    font-size: 16px;
+}
+
+.bg-green {
+    background-color: #148a63;
+}
+
+.container a {
+    color: white;
+    text-decoration: none;
+}
+
+.container a:hover {
+    color: gold;
 }

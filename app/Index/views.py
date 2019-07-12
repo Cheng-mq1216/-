@@ -59,7 +59,7 @@ class RegisterFormView(FormView):
     """注册页面。使用系统提供的创建用户表单。"""
     template_name = 'register.html'
     form_class = UserCreationForm
-    success_url = '/'
+    success_url = '/login/'
 
     def form_valid(self, form):
         """校验成功，保存用户。"""
