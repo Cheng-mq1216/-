@@ -169,9 +169,12 @@ def logout(request):
 
 
 def userinfo(request):
-    user = current_log(request)
-    articles = Article.objects.filter(user=user)
-    return render(request, 'user.html', {'user': user,'articles':articles})
+    current_user = current_log(request)
+    if request.method == 'GET':
+        id = request.GET.get('id')#文章对应用户的ID
+        user=User.objects.get(id=id)
+        articles = Article.objects.filter(user=user)
+    return render(request, 'user.html', {'current_user': current_user,'articles':articles,'user':user})
 
 
 # 注册视图函数
