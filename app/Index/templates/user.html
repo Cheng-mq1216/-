@@ -19,8 +19,9 @@
             <div class="tab-pane fade show active" id="list-home" role="tabpanel" aria-labelledby="list-home-list">用户标签，个性化留言</div>
             <div class="tab-pane fade" id="list-profile" role="tabpanel" aria-labelledby="list-profile-list">
                 {% for i in articles %}
+
                 <sapn>{{i.title}}</sapn>
-                {% endfor %}</div>
+                <br> {% endfor %}</div>
             <div class="tab-pane fade" id="list-messages" role="tabpanel" aria-labelledby="list-messages-list">用户名：{{ user.name }}</div>
             <div class="tab-pane fade" id="list-settings" role="tabpanel" aria-labelledby="list-settings-list">
                 <p>用户名修改：</p>
