@@ -10,8 +10,5 @@ WORKDIR /code
 COPY . .
 COPY ./config/pip.conf /etc/pip.conf
 
-# 切换到生产模式
-RUN mv config/production_settings.py app/settings.py
-
 # 安装依赖
 RUN pip install -r requirements/production.txt 

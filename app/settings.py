@@ -12,6 +12,11 @@ https://docs.djangoproject.com/en/2.2/ref/settings/
 
 import os
 
+# SECURITY WARNING: don't run with debug turned on in production!
+
+
+DEBUG = False if os.environ.get("DEBUG") == 'false' else True
+
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -23,20 +28,12 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = 'x8et$7a+4lwhko-0a%%%kqp4rb&@3&ee_616(3(q9&%+3n@9pl'
 
-# SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
-
 ALLOWED_HOSTS = []
-
-INTERNAL_IPS = [
-    '127.0.0.1'
-]
 
 LOGIN_URL = '/login'
 LOGIN_REDIRECT_URL = '/'
 
 # Application definition
-
 INSTALLED_APPS = [
     'simpleui',
     'django.contrib.admin',
@@ -47,7 +44,6 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'app.Index',
     'mdeditor',
-    'debug_toolbar'
 ]
 
 MIDDLEWARE = [
@@ -58,7 +54,6 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    'debug_toolbar.middleware.DebugToolbarMiddleware'
 ]
 
 ROOT_URLCONF = 'app.urls'
@@ -81,55 +76,11 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'app.wsgi.application'
 
-
-# Database
-# https://docs.djangoproject.com/en/2.2/ref/settings/#databases
-
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
-    }
-}
-
-
-# Password validation
-# https://docs.djangoproject.com/en/2.2/ref/settings/#auth-password-validators
-
 AUTH_PASSWORD_VALIDATORS = [
     {
         'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
-    },
-    # {
-    #     'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator',
-    # },
-    # {
-    #     'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator',
-    # },
-    # {
-    #     'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
-    # },
+    }
 ]
-
-
-# Internationalization
-# https://docs.djangoproject.com/en/2.2/topics/i18n/
-
-LANGUAGE_CODE = 'zh-hans'
-
-USE_TZ = False
-
-TIME_ZONE = 'Asia/ShangHai'
-
-USE_I18N = True
-
-USE_L10N = True
-
-USE_TZ = True
-
-
-# Static files (CSS, JavaScript, Images)
-# https://docs.djangoproject.com/en/2.2/howto/static-files/
 
 # 设置静态文件URL
 STATIC_URL = '/static/'
@@ -139,17 +90,80 @@ STATICFILES_DIRS = (
     os.path.join(BASE_DIR, 'app', 'Index', 'static'),
 )
 
-STATIC_ROOT = os.path.join(BASE_DIR, 'dist')
-
 # 设置文件上传路径，图片上传、文件上传都会存放在此目录里
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'uploads')
 
-MARKDOWN_DEUX_STYLES = {
-    "default": {
-        "extras": {
-            "code-friendly": True,
+LANGUAGE_CODE = 'zh-hans'
+
+USE_TZ = False
+USE_I18N = True
+USE_L10N = True
+USE_TZ = True
+
+# Use some debug tools in development.
+if DEBUG:
+    INSTALLED_APPS.append('debug_toolbar')
+    STATIC_ROOT = os.path.join(BASE_DIR, 'dist')
+    TIME_ZONE = 'Asia/ShangHai'
+
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.sqlite3',
+            'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        }
+    }
+
+    MIDDLEWARE.append('debug_toolbar.middleware.DebugToolbarMiddleware')
+
+    # for debug-toolbar
+    INTERNAL_IPS = [
+        '127.0.0.1'
+    ]
+
+
+# In production, we will rewrite some settings.
+else:
+    # logging
+    import logging
+    LOG_FORMAT = "%(asctime)s - %(levelname)s - %(message)s"
+    logging.basicConfig(filename='/log/django.log',
+                        level=logging.DEBUG, format=LOG_FORMAT)
+
+    # safety
+    SECRET_KEY = os.environ.get('SECRET_KEY')
+    ALLOWED_HOSTS = [
+        '*'
+    ]
+    # Not HTTPS... temporarliy
+    SECURE_SSL_REDIRECT = False
+
+    # Use more strict password strategy
+    AUTH_PASSWORD_VALIDATORS.extend([
+        {
+            'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator',
         },
-        "safe_mode": "escape",
-    },  
-}
+        {
+            'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator',
+        },
+        {
+            'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
+        }
+    ])
+
+    # Use MySQL
+    DBPSWD = os.environ.get('MYSQL_PASSWORD')
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.mysql',
+            'NAME': 'django',
+            'USER': 'root',
+            'PASSWORD': DBPSWD,
+            'HOST': 'db',
+            'PORT': '3306',
+            'OPTIONS': {'charset': 'utf8mb4'}
+        }
+    }
+
+    # Static files is in /dist. See docker-compose.yml
+    STATIC_ROOT = os.path.join('/dist')

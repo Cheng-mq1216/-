@@ -23,11 +23,11 @@ services:
       - web
   db:
     restart: always
-    image: mysql:5.6
+    image: mariadb:latest
     env_file: .env
     ports:
       - "3306:3306"
     volumes:
       - ./data/initsql:/docker-entrypoint-initdb.d
       - ./data/db:/var/lib/mysql
-    command: [mysqld, --character-set-server=utf8, --collation-server=utf8_unicode_ci]
+    command: [mysqld, --character-set-server=utf8mb4, --collation-server=utf8mb4_unicode_ci, --init_connect='SET NAMES utf8mb4', --skip-character-set-client-handshake=true]
