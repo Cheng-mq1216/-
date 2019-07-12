@@ -1,221 +1,155 @@
 # 加密算法包
 import hashlib
 
+from django import forms
+
+# 导入权限控制类
+from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth.forms import UserCreationForm, PasswordChangeForm
+from django.contrib.auth.models import User
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth.mixins import LoginRequiredMixin
+
 # 导入分页插件包
 from django.core.paginator import EmptyPage, PageNotAnInteger, Paginator
-from django.shortcuts import redirect, render,Http404
+from django.http import HttpResponse
+from django.urls import reverse
 
-# 引入模型
-from .models import Article, Category, Leave, User
+# 导入请求上下文模版
+from django.template import RequestContext
 
-# Create your views here.
+# 导入快捷函数
+from django.shortcuts import Http404, redirect, render, render_to_response
 
-def login_required(request, user):
-    if current_log(request) != user:
-        raise Http404("你所访问的页面不存在") 
+# 导入模型视图
+from django.views.generic import ListView, DetailView
+from django.views.generic.edit import FormView, CreateView, DeleteView, UpdateView, FormMixin
 
+# 导入Markdown渲染插件
+from markdown import markdown
 
-def index(request):
-    # 添加中间导航
-    categorys = Category.objects.all()
-    articles = Article.objects.all().order_by("-time")
-    # session 判断 是否登录来区分用户界面
-    user = current_log(request)
-    if request.method == 'GET':
-        p = request.GET.get('p')  # 在URL中获取当前页面数
-        paginator = Paginator(articles, 5)  # 对查询到的数据对象list进行分页，设置超过5条数据就分页
-        try:
-            articles = paginator.page(p)  # 获取当前页码的记录
-        except PageNotAnInteger:
-            articles = paginator.page(1)  # 如果用户输入的页码不是整数时,显示第1页的内容
-        except EmptyPage:
-            articles = paginator.page(paginator.num_pages)  # 如果用户输入的页数不在系统的页码列表中时,显示最后一页的内容
-
-    return render(request, 'index.html', {
-        'articles': articles,
-        'user': user
-    })
+# 导入模型
+from .models import Article, Category, Comment
 
 
-def details(request):
-    user = current_log(request)
-
-    if request.method == 'GET':
-        # leave = Leave.objects.all()
-        id = request.GET.get('id')
-        article = Article.objects.get(id=id)
-        leave = Leave.objects.filter(article=article)
-        return render(request, 'details.html', {
-            'article': article,
-            'user': user,
-            'leaves': leave
-        })
-
-    if request.method == 'POST':
-        if not user:
-            return redirect('/login/')
-        content = request.POST.get("content")
-        article_id = request.POST.get("article")
-        article = Article.objects.get(id=article_id)
-        Leave.objects.create(content=content, user=user, article=article)
-        return redirect('/details/?id=' + article_id)
-
-# 删除留言
-def leave_delete(request):
-    user = current_log(request)
-    
-    if request.method == 'GET':
-        id = request.GET.get('id')
-        leave = Leave.objects.get(id=id)
-
-        login_required(request, leave.user)
-        leave.delete()
-        return redirect('/details/?id=' + str(leave.article.id))
-    return render(request, 'details.html', {
-        'user': user,
-        'leaves': leave
-    })
-
-# 删文章
-def article_delete(request):
-    user = current_log(request)
-    
-    if request.method == 'GET':
-        id = request.GET.get('id')
-        article = Article.objects.get(id=id)
-        login_required(request, article.user)
-        article.delete()
-        return redirect('/index/')
-
-#编辑文章
-def article_update(request): 
-    if request.method == 'GET':
-        id = request.GET.get('id')
-        article = Article.objects.get(id=id)
-        login_required(request, article.user)
-        categorys = Category.objects.all()
-        return render(request, 'update.html', {
-            "categorys": categorys,
-            'article': article,
-        })
-    elif request.method == 'POST':
-        title = request.POST.get("title")
-        category_name = request.POST.get("category")
-        category = Category.objects.get(name=category_name)
-        content = request.POST.get("content")
-        article_id = request.POST.get("article")
-        login_required(request, article.user)
-        article = Article.objects.get(id=article_id)
-        article.title = title
-        article.category = category
-        article.content = content
-        article.save()
-        
-        return redirect('/index/')
-
-def post(request):
-    # session 判断 是否登录来区分用户界面
-    user = current_log(request)
-    if not user:
-        return redirect('/login/')
-
-    if request.method == 'GET':
-        categorys = Category.objects.all()
-        return render(request, 'post.html', {
-            "categorys": categorys,
-            'user': user,
-        })
-
-    elif request.method == 'POST':
-        title = request.POST.get("title")
-        category_name = request.POST.get("category")
-        category = Category.objects.get(name=category_name)
-        content = request.POST.get("content")
-        ret = Article.objects.create(
-            title=title, category=category, content=content, user=user)
-        if ret:
-            return redirect('/index/')
+class ArticleForm(forms.ModelForm):
+    class Meta:
+        model = Article
+        fields = ['title', 'category', 'content']
 
 
-def login(request):
-
-    user = current_log(request)
-    if user:
-        return redirect('/index/')
-
-    if request.method == 'GET':
-        return render(request, 'login.html',{'user': user})
-
-    elif request.method == 'POST':
-        username = request.POST.get("username")
-        password = request.POST.get("password")
-
-        sha256 = hashlib.sha256(bytes('加一些东西', encoding='utf8') + b'lxgzhw')
-        sha256.update(bytes(password, encoding='utf8'))
-        password = sha256.hexdigest()
-        ret = User.objects.filter(name=username, password=password)
-
-        if not ret:
-            return render(request, 'login.html', {'error': '错误，无法登陆'})
-
-        # 登录成功
-        request.session['username'] = username
-        return redirect('/index/')
+class CommentForm(forms.ModelForm):
+    class Meta:
+        model = Comment
+        fields = ['content']
 
 
-def logout(request):
-    del request.session['username']
-    return redirect('/index/')
+class UserDetail(DetailView):
+    model = User
+    template_name = 'user.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['articles'] = self.object.article_set.all()
+        context['form'] = CommentForm()
+        return context
 
 
-def userinfo(request):
-    user = current_log(request)
-    articles = Article.objects.filter(user=user)
-    return render(request, 'user.html', {'user': user,'articles':articles})
+class RegisterFormView(FormView):
+    """注册页面。使用系统提供的创建用户表单。"""
+    template_name = 'register.html'
+    form_class = UserCreationForm
+    success_url = '/'
+
+    def form_valid(self, form):
+        """校验成功，保存用户。"""
+        form.save()
+        return super().form_valid(form)
 
 
-# 注册视图函数
-def register(request):
-    if current_log(request):
-        return redirect('/index/')
-
-    if request.method == 'GET':
-        return render(request, 'register.html')
-
-    elif request.method == 'POST':
-        # 获取前端数据
-        username = request.POST.get('username')
-        password = request.POST.get('password')
-        password1 = request.POST.get('password1')
-
-        try:
-            assert password == password1
-            if User.objects.filter(name=username):
-                raise Exception()
-        except AssertionError:
-            error = '校验错误'
-        except Exception as e:
-            error = "用户名重复！"
-        else:  # 成功
-            sha256 = hashlib.sha256(
-                bytes('加一些东西', encoding='utf8') + b'lxgzhw')
-            sha256.update(bytes(password, encoding='utf8'))
-            password = sha256.hexdigest()
-            User.objects.create(name=username, password=password)
-            return redirect('/login/')
-
-        return render(request, 'register.html', {
-            "error": error
-        })
-
-        if username and password and password == password1:
-            if User.objects.filter(name=username):
-                return render(request, 'register.html', {
-                    error: "用户名重复！"
-                })
+class ArticlesList(ListView):
+    """处理多篇文章的显示。"""
+    model = Article
+    queryset = Article.objects.order_by('-time')
+    context_object_name = 'articles'
+    template_name = 'index.html'
+    paginate_by = 5
 
 
-def current_log(request):
-    username = request.session.get('username')
-    if username:
-        return User.objects.get(name=username)
+class ArticleDetail(DetailView, FormMixin):
+    """处理单篇文章详情页的显示。
+    以及所有留言的显示
+    FormMixin 处理留言的上传 。
+    """
+    model = Article
+    context_object_name = 'article'
+    template_name = 'details.html'
+    form_class = CommentForm
+
+    def get_success_url(self):
+        return reverse('article-detail', kwargs={'pk': self.object.pk})
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['comments'] = self.object.comment_set.all()
+        context['form'] = self.get_form()
+        return context
+
+    def post(self, request, *args, **kwargs):
+        self.object = self.get_object()
+        form = self.get_form()
+        if form.is_valid():
+            return self.form_valid(form)
+        else:
+            return self.form_invalid(form)
+
+    def form_valid(self, form):
+        a = form.save(commit=False)
+        a.author = self.request.user
+        a.article = self.object
+        a.save()
+        return super().form_valid(form)
+
+
+class ArticleFormView(FormView):
+    """处理添加 Article 时的表单"""
+
+    model = Article
+    template_name = 'post.html'
+    context_object_name = 'articles'
+    form_class = ArticleForm
+    success_url = '/'
+
+    def form_valid(self, form):
+        a = form.save(commit=False)
+        a.author = self.request.user
+        a.save()
+        return super().form_valid(form)
+
+
+class ArticleUpdateView(UpdateView, LoginRequiredMixin):
+    """处理更新Article时的表单"""
+    model = Article
+    success_url = '/'
+    fields = ['content']
+    template_name = 'update.html'
+
+
+class ArticleDelete(DeleteView, LoginRequiredMixin):
+    """处理删除Article的操作"""
+    model = Article
+    success_url = '/'
+
+
+class CommentView(CreateView):
+    """处理评论的表单"""
+    model = Comment
+    fields = ['content', 'author']
+
+
+class CommentDelete(DeleteView, LoginRequiredMixin):
+    """删除评论的操作"""
+    model = Comment
+
+    def get_success_url(self):
+        return reverse('article-detail', kwargs={'pk': self.object.article.pk})

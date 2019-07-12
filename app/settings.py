@@ -12,6 +12,7 @@ https://docs.djangoproject.com/en/2.2/ref/settings/
 
 import os
 
+
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
@@ -28,8 +29,11 @@ DEBUG = True
 ALLOWED_HOSTS = []
 
 INTERNAL_IPS = [
-   '127.0.0.1' 
+    '127.0.0.1'
 ]
+
+LOGIN_URL = '/login'
+LOGIN_REDIRECT_URL = '/'
 
 # Application definition
 
@@ -42,8 +46,8 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'app.Index',
-    'ckeditor',
-    'ckeditor_uploader',
+    'mdeditor',
+    'markdown_deux',
     'debug_toolbar'
 ]
 
@@ -97,15 +101,15 @@ AUTH_PASSWORD_VALIDATORS = [
     {
         'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
     },
-    {
-        'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator',
-    },
-    {
-        'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator',
-    },
-    {
-        'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
-    },
+    # {
+    #     'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator',
+    # },
+    # {
+    #     'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator',
+    # },
+    # {
+    #     'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
+    # },
 ]
 
 
@@ -140,35 +144,13 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'dist')
 
 # 设置文件上传路径，图片上传、文件上传都会存放在此目录里
 MEDIA_URL = '/media/'
-MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+MEDIA_ROOT = os.path.join(BASE_DIR, 'uploads')
 
-
-CKEDITOR_UPLOAD_PATH = 'upload/'
-
-# 富文本编辑器配置
-CKEDITOR_CONFIGS = {
-    # 将这份配置命名为 my_config
-    'ck': {
-        'skin': 'moono-lisa',
-        'toolbar_Basic': [
-            ['Source', '-', 'Bold', 'Italic']
-        ],
-        'toolbar_Full': [
-            ['Styles', 'Format', 'Bold', 'Italic', 'Underline', 'Strike', 'SpellChecker', 'Undo', 'Redo'],
-            ['Link', 'Unlink', 'Anchor'],
-            ['Image', 'Flash', 'Table', 'HorizontalRule'],
-            ['TextColor', 'BGColor'],
-            ['Smiley', 'SpecialChar'],
-            # 在工具栏中添加该功能的按钮
-            ['CodeSnippet'], ['Source'],
-
-        ],
-        'toolbar': 'Full',
-        'height': 291,
-        'width': 835,
-        'filebrowserWindowWidth': 940,
-        'filebrowserWindowHeight': 725,
-        # 添加的插件
-        'extraPlugins': 'codesnippet',
-    }
+MARKDOWN_DEUX_STYLES = {
+    "default": {
+        "extras": {
+            "code-friendly": True,
+        },
+        "safe_mode": "escape",
+    },  
 }

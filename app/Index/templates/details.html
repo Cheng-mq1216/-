@@ -8,35 +8,40 @@
     <div class="jumbotron jumbotron-ad hidden-print">
         <div class="container">
             <h1> {{article.title}} </h1>
-            <p>{{article.user.name}} </p>
+            <p> {{article.user.name}} </p>
             <p>
-                <span>{{article.time}}</span>
+                <span> {{article.time}}</span>
                 <span class="badge badge-light">{{article.category.name}}</span>
             </p>
         </div>
     </div>
     <div class="content-underlay"></div>
     <div class="container">
-        <article class="page-content"> {{article.content}}</article>
+        <article class="page-content"> {{ article.content | safe }}</article>
     </div>
 
     <div class="hr margin-top-xl"></div>
 
     <!--文章结束-->
     <div class="container">
+
+        {% if user == article.author %}
         <!-- 删除文章 -->
-        {% if user == article.user %}
-        <a href="/article_delete/?id={{article.id}}">删除文章</a>
+        <form action="{% url 'article-delete' article.id %}" method="post">
+            {% csrf_token %}
+            <input type="submit" value="删除文章">
+        </form>
+
         <!-- 编辑文章 -->
-        <a href="/article_update/?id={{article.id}}">编辑文章</a> {% endif %}
+        <a href="{% url 'article-update' article.id %}">编辑文章</a>
+        {% endif %}
+
         <!--留言开始-->
         {% if user %}
-        <form action="/details/" method="POST">
+        <form action="{% url 'article-detail' article.id %}" method="POST">
             {% csrf_token %}
-            <input name="article" value="{{article.id}}" hidden />
-            <textarea name="content" rows="10"></textarea>
-            <br>
-            <input type="submit" value="确定">
+            {{ form.as_p }}
+            <input type="submit" value="提交留言" />
         </form>
         {% else %}
         <p> 您还没有登录，请登录后再留言。</p>
@@ -47,10 +52,10 @@
         <div class="container">
             <div class="top">
                 <span>全部留言</span>
-                <span class="number">{{ leaves | length }}</span>
+                <span class="number">{{ comments | length }}</span>
             </div>
             <div class="bottom">
-                {% for i in leaves %}
+                {% for i in comments %}
                 <div class="box">
                     <div class="left">
                         <img src="/media/{{i.img}}" alt="">
@@ -58,8 +63,13 @@
                     <div class="right">
                         <div class="right_top">
                             <span>{{i.user}}</span>
-                            <span>{{i.time}}</span> {% if user == i.user %}
-                            <a href="/leave_delete/?id={{i.id}}">删除留言</a> {% endif %}
+                            <span>{{i.time}}</span>
+                            {% if user == i.author %}
+                            <form action="{% url 'comment-delete' i.id %}" method="POST">
+                                {% csrf_token %}
+                                <input type="submit" value="删除留言">
+                                {% endif %}
+                            </form>
                         </div>
                         <div class="right_bottom">
                             <p>{{i.content}}</p>

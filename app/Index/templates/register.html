@@ -6,9 +6,11 @@
     <form action="/register/" method="post" class="form-signin">
         {% csrf_token %}
         <h1 class="h3 mb-3 font-weight-normal">注册账号</h1>
-        <input type="text" name="username" class="form-control" placeholder="用户名" aria-describedby="sizing-addon2" required autofocus>
+        <!-- <input type="text" name="username" class="form-control" placeholder="用户名" aria-describedby="sizing-addon2" required autofocus>
         <input type="password" name="password" class="form-control" placeholder="密码" aria-describedby="sizing-addon2" required>
-        <input type="password" name="password1" class="form-control" placeholder="重复密码" aria-describedby="sizing-addon2" required>
+        <input type="password" name="password1" class="form-control" placeholder="重复密码" aria-describedby="sizing-addon2" required> -->
+        
+        {{ form.as_p }}
         <br>
         <div class="button">
             <input type="submit" class="btn btn-lg btn-primary " value="确认注册">

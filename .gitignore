@@ -9,11 +9,14 @@ __pycache__/
 
 # deploy
 .env
-backend
 data
 
-/log
+log
 /static
+/upload
+
+# sql dumps in production
+/dumps
 
 media
 upload

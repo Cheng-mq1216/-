@@ -8,44 +8,54 @@ import random
 
 from django.contrib.auth import get_user_model
 from django.core.management.base import BaseCommand, CommandError
-from django.contrib.auth.models import UserManager
+from django.contrib.auth.models import User
 from faker import Faker
 
-from ...models import Article, Category, Leave, User
+from ...models import Article, Category, Comment
 
 
 class Command(BaseCommand):
     help = 'Seeds the database.'
 
-    manager = get_user_model()._default_manager.db_manager('default')
-    if manager.filter(username='root'):
-        manager.get(username='root').delete()
-    
-    manager.create_superuser(
+    def handle(self, *args, **options):
+        if User.objects.filter(username='root'):
+            User.objects.get(username='root').delete()
+
+        User.objects.create_superuser(
             username='root', email='root@mail.com', password='root')
 
-    print('Admin root用户已生成，密码为root')
-    print('WARNING: 请勿在生产环境下使用本脚本')
+        print('Admin root用户已生成，密码为root')
+        print('WARNING: 请勿在生产环境下使用本脚本')
 
-    def handle(self, *args, **options):
+        category_number = 10
+        user_number = 10
+        article_number = 20
+        comment_number = 100
 
         fake = Faker('zh-cn')
         categorys = [Category.objects.create(
-            name=fake.word()) for _ in range(10)]
+            name=fake.word()) for _ in range(category_number)]
 
         users = [User.objects.create(
-            name=fake.name(), password=fake.password()
-        ) for _ in range(10)]
+            username=fake.name(), password=fake.password()
+        ) for _ in range(user_number)]
 
         articles = [Article.objects.create(
             title=fake.company_prefix(),
             category=random.choice(categorys),
             content=fake.text(max_nb_chars=600),
-            user=random.choice(users)
-        ) for _ in range(20)]
+            author=random.choice(users)
+        ) for _ in range(article_number)]
 
-        leaves = [Leave.objects.create(
+        comments = [Comment.objects.create(
             article=random.choice(articles),
             content=fake.text(),
-            user=random.choice(users)
-        ) for _ in range(100)]
+            author=random.choice(users)
+        ) for _ in range(comment_number)]
+
+        print("""生成数据：
+        category : {}
+        user: {}
+        articles: {}
+        comments: {}
+        """.format(category_number, user_number, article_number, comment_number))
