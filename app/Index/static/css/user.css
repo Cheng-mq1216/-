@@ -1,12 +1,11 @@
-/* .bg-green {
-    background-color: #148a63;
-} */
-
 .row {
-    width: 600px;
+    width: 800px;
+    height: 500px;
     margin-left: auto;
     margin-right: auto;
     background-color: white;
+    padding: 20px;
+    border-radius: 4px;
 }
 
 .list-group-item.active {
@@ -18,4 +17,13 @@
     background-color: #1fa67a;
     height: 300px;
     margin-bottom: -120px;
+}
+
+.list-group {
+    margin-top: 50px;
+}
+
+.col-8 {
+    background-color: white;
+    border-radius: 5px;
 }
