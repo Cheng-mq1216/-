@@ -41,6 +41,7 @@ a {
     display: -webkit-box;
     -webkit-line-clamp: 3;
     -webkit-box-orient: vertical;
+    font-family: YouYuan;
 }
 
 #article-list h3 a:hover {

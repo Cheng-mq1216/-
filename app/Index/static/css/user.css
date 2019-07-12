@@ -1,0 +1,21 @@
+/* .bg-green {
+    background-color: #148a63;
+} */
+
+.row {
+    width: 600px;
+    margin-left: auto;
+    margin-right: auto;
+    background-color: white;
+}
+
+.list-group-item.active {
+    background-color: green;
+    border-color: gray;
+}
+
+.bgc {
+    background-color: #1fa67a;
+    height: 300px;
+    margin-bottom: -120px;
+}
