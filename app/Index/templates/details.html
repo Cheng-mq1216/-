@@ -8,7 +8,7 @@
     <div class="jumbotron jumbotron-ad hidden-print">
         <div class="container">
             <h1> {{article.title}} </h1>
-            <p>{{article.user.name}} </p>
+            <p><a href="/user/?id={{article.user.id}}">{{article.user.name}} </a> </p>
             <p>
                 <span>{{article.time}}</span>
                 <span class="badge badge-light">{{article.category.name}}</span>

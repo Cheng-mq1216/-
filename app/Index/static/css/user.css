@@ -1,10 +1,10 @@
 .row {
-    width: 800px;
-    height: 500px;
+    width: 60%;
+    height: 400px;
     margin-left: auto;
     margin-right: auto;
     background-color: white;
-    padding: 20px;
+    padding: 30px;
     border-radius: 4px;
 }
 
@@ -26,4 +26,12 @@
 .col-8 {
     background-color: white;
     border-radius: 5px;
+}
+
+.thiscss a {
+    color: green;
+}
+
+.text {
+    text-align: center;
 }

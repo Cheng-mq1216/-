@@ -102,3 +102,12 @@ article {
 .bg-green {
     background-color: #148a63;
 }
+
+.container a {
+    color: white;
+    text-decoration: none;
+}
+
+.container a:hover {
+    color: gold;
+}
