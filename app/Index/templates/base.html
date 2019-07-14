@@ -8,6 +8,7 @@
     <!-- CSS -->
     {% load static %}
     <link rel="stylesheet" href="https://cdn.bootcss.com/bootstrap/4.0.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.css">
     <link rel="stylesheet" href="{% static 'css/base.css' %}"> {% block css %} {% endblock %}
     <!-- JS -->
     <script src="https://cdn.bootcss.com/jquery/3.2.1/jquery.slim.min.js"></script>
@@ -19,20 +20,21 @@
 <body>
     <nav class="navbar  navbar-expand-lg fixed-top navbar-dark bg-green ">
         <h3 class="navbar-brand">平台</h3>
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarText" aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarText"
+            aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="navbarText">
             <ul class="navbar-nav mr-auto">
-                <li class="nav-item active"><a class="nav-link" href="/">首页<span class="sr-only">(current)</span></a>
+                <li class="nav-item active"><a class="nav-link glyphicon glyphicon-home " href="/"><i class="fa fa-home fa-fw"></i>首页<span class="sr-only">(current)</span></a>
                 </li>
                 {% if user.is_authenticated %}
-                <li class="nav-item"><a class="nav-link" href="{% url 'post-article' %}">发帖</a></li>
-                <li class="nav-item"><a class="nav-link" href="{% url 'user-info' user.id %}">用户</a></li>
-                <li class="nav-item"><a class="nav-link" href="{% url 'logout' %}">退出</a></li>
+                <li class="nav-item"><a class="nav-link" href="{% url 'post-article' %}"><i class="fa fa-send fa-fw"></i>发帖</a></li>
+                <li class="nav-item"><a class="nav-link" href="{% url 'user-info' user.id %}"><i class="fa fa-user fa-fw"></i>用户</a></li>
+                <li class="nav-item"><a class="nav-link" href="{% url 'logout' %}"><i class="fa fa-sign-out fa-fw"></i>退出</a></li>
                 {% else %}
-                <li class="nav-item"><a class="nav-link" href="{% url 'login' %}">登录</a></li>
-                <li class="navs-item"><a class="nav-link" href="{% url 'register' %}">注册</a></li>
+                <li class="nav-item"><a class="nav-link" href="{% url 'login' %}"><i class="fa fa-sign-in fa-fw"></i>登录</a></li>
+                <li class="navs-item"><a class="nav-link" href="{% url 'register' %}"><i class="fa fa-registered fa-fw"></i>注册</a></li>
                 {% endif %}
             </ul>
         </div>

@@ -111,3 +111,12 @@ article {
 .container a:hover {
     color: gold;
 }
+
+/* .article-action {
+    align-content: center;
+} */
+
+.submit-comment {
+    display: flex;
+    justify-content: space-between;
+}
