@@ -8,7 +8,7 @@
     <div class="jumbotron jumbotron-ad hidden-print">
         <div class="container">
             <h1> {{article.title}} </h1>
-            <p><a href="{% url 'user-info' article.author.id %}">{{  article.author.name }} </a> </p>
+            <p><a href="{% url 'user-info' article.author.id %}">{{  article.author.username }} </a> </p>
             <p>
                 <span> {{article.time}}</span>
                 <span class="badge badge-light">{{article.category.name}}</span>
@@ -17,7 +17,7 @@
     </div>
     <div class="content-underlay"></div>
     <div class="container">
-        <article class="page-content"> {{ article.content | safe }}</article>
+        <article class="page-content"> {{ md | safe }}</article>
     </div>
 
     <div class="hr margin-top-xl">
@@ -47,7 +47,7 @@
         <form action="{% url 'article-detail' article.id %}" method="POST">
             <div class="collapse" id="collapseExample">
                 <div class="card card-body">
-                    {% if user %}
+                    {% if user.is_authenticated %}
                     {% csrf_token %}
                     <div class="sumbit-comment">
                         {{ form }}

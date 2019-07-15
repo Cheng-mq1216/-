@@ -61,6 +61,10 @@ article {
     font-size: 18px;
 }
 
+img {
+    width: 100%;
+}
+
 .hr {
     position: relative;
     text-align: center;

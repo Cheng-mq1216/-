@@ -29,7 +29,7 @@
             <sapn><a href="{% url 'article-detail' i.id %} ">{{i.title}}</a> </sapn>
             <br> {% endfor %}</div>
         <div class="tab-pane fade" id="list-messages" role="tabpanel" aria-labelledby="list-messages-list">
-            用户名：{{ user.name }}</div>
+            用户名：{{ user.username }}</div>
         {% if user.is_authenticated %}
         <div class="tab-pane fade" id="list-settings" role="tabpanel" aria-labelledby="list-settings-list">
             <p>用户名修改：</p>
