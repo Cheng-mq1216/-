@@ -1,7 +1,7 @@
 {% extends 'base.html' %} {% block title %}
 <title>详情页</title>
 {% endblock %} {% block css %} {% load static %}
-<link rel="stylesheet" href="{% static 'css/details.css' %}"> 
+<link rel="stylesheet" href="{% static 'css/details.css' %}">
 <link rel="stylesheet" href="{% static 'css/styles.css' %}"> {% endblock %} {% block main %}
 <div>
 
@@ -19,11 +19,12 @@
     <div class="content-underlay"></div>
     <div class="container">
         <article class="page-content"> {{ md | safe }}</article>
+        <div class="hr margin-top-xl">
+            <span class="hr-text text-xl text-muted">end</span>
+        </div>
     </div>
 
-    <div class="hr margin-top-xl">
-        <span class="hr-text text-xl text-muted">end</span>
-    </div>
+
 
     <!--文章结束-->
     <div class="container">
