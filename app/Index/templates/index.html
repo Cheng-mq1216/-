@@ -15,7 +15,9 @@
                 </p>
             </div>
             <div class="card-body">
-                <p class="card-text">{{i.content | safe }}</p>
+                <div class="card-text">
+                    {{ i.md | safe }}
+                </div>
             </div>
         </div>
         {% endfor %}
