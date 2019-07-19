@@ -41,7 +41,7 @@ class Article(models.Model):
 # 评论表
 class Comment(models.Model):
     time = models.DateTimeField(auto_now_add=True, verbose_name="时间")
-    content = models.CharField(max_length=500, verbose_name="内容")
+    content = models.TextField(max_length=500, verbose_name="内容")
     article = models.ForeignKey(
         Article, verbose_name="文章", on_delete=models.CASCADE)
     author = models.ForeignKey(

@@ -54,12 +54,12 @@ article {
     z-index: 2;
     position: relative;
     border-radius: 4px;
-    padding: 5px 40px 22px 40px;
+    padding: 5px 40px 42px 40px;
     min-height: 180px;
     padding-top: 30px;
     font-size: 18px;
     font-family: Georgia, 'Times New Roman', Times, serif;
-    word-break: break-all; 
+    word-break: break-all;
 }
 
 img {
@@ -82,12 +82,12 @@ img {
     background-color: #148a63;
 }
 
-.container a {
+.jumbotron a {
     color: white;
     text-decoration: none;
 }
 
-.container a:hover {
+.jumbotron a:hover {
     color: gold;
 }
 
@@ -121,12 +121,22 @@ img {
     padding: 0 .5em;
 }
 
-.margin-top-xl {
+.margin-xl {
     margin-top: 40px !important;
+    margin-bottom: 40px !important;
 }
 
 .text-muted {
     color: #b3b3b3;
-    font-family:  'Comfortaa', Times, serif;
+    font-family: 'Comfortaa', Times, serif;
     font-size: 24px;
+}
+
+.right-text {
+    float: right;
+    color: gray;
+}
+
+.center-op {
+    text-align: center;
 }
