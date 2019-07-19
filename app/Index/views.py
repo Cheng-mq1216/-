@@ -8,7 +8,7 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.forms import UserCreationForm, PasswordChangeForm
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
-from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 
 # 导入分页插件包
 from django.core.paginator import EmptyPage, PageNotAnInteger, Paginator
@@ -129,7 +129,7 @@ class ArticleDetail(DetailView, FormMixin):
         return super().form_valid(form)
 
 
-class ArticleFormView(FormView):
+class ArticleFormView(LoginRequiredMixin, FormView):
     """处理添加 Article 时的表单"""
 
     model = Article
@@ -145,29 +145,32 @@ class ArticleFormView(FormView):
         return super().form_valid(form)
 
 
-class ArticleUpdateView(UpdateView, LoginRequiredMixin):
-    """处理更新Article时的表单"""
+class ArticleUpdateView(UserPassesTestMixin, UpdateView):
+    """处理更新 Article 时的表单"""
     model = Article
     success_url = '/'
     fields = ['content', 'category']
     template_name = 'update.html'
 
+    def test_func(self):
+        return self.request.user == self.get_object().author
 
-class ArticleDelete(DeleteView, LoginRequiredMixin):
+
+class ArticleDelete(UserPassesTestMixin, DeleteView):
     """处理删除Article的操作"""
     model = Article
     success_url = '/'
 
-
-class CommentView(CreateView):
-    """处理评论的表单"""
-    model = Comment
-    fields = ['content', 'author']
+    def test_func(self):
+        return self.request.user == self.get_object().author
 
 
-class CommentDelete(DeleteView, LoginRequiredMixin):
+class CommentDelete(UserPassesTestMixin, DeleteView):
     """删除评论的操作"""
     model = Comment
 
     def get_success_url(self):
         return reverse('article-detail', kwargs={'pk': self.object.article.pk})
+
+    def test_func(self):
+        return self.request.user == self.get_object().author
