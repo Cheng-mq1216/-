@@ -25,13 +25,14 @@
         {% csrf_token %}
 
         {% load addclass %}
-        {{ form.media }}
+
+        {% if not is_mobile %}
+            {{ form.media }}
+        {% endif %}
 
         {{ form.title | class:"form-control form-control-lg" }}
-
         {{ form.category |  class:"form-control form-control-sm" }}
-
-        {{ form.content }}
+        {{ form.content | class:"form-control" }}
 
         <button class="btn btn-success" type="submit">提交</button>
     </form>

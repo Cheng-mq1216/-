@@ -129,6 +129,17 @@ class ArticleDetail(DetailView, FormMixin):
         return super().form_valid(form)
 
 
+def is_mobile(useragent):
+    devices = ["Android", "iPhone", "SymbianOS",
+               "Windows Phone", "iPad", "iPod"]
+
+    for d in devices:
+        if d in useragent:
+            return True
+
+    return False
+
+
 class ArticleFormView(LoginRequiredMixin, FormView):
     """处理添加 Article 时的表单"""
 
@@ -137,6 +148,11 @@ class ArticleFormView(LoginRequiredMixin, FormView):
     context_object_name = 'articles'
     form_class = ArticleForm
     success_url = '/'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['is_mobile'] = is_mobile(self.request.META['HTTP_USER_AGENT'])
+        return context
 
     def form_valid(self, form):
         a = form.save(commit=False)
@@ -151,6 +167,11 @@ class ArticleUpdateView(UserPassesTestMixin, UpdateView):
     success_url = '/'
     fields = ['content', 'category']
     template_name = 'update.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['is_mobile'] = is_mobile(self.request.META['HTTP_USER_AGENT'])
+        return context
 
     def test_func(self):
         return self.request.user == self.get_object().author

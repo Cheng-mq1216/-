@@ -21,10 +21,15 @@
         <div class="container">
 
             {% load addclass %}
+            {% if not is_mobile %}
             {{ form.media }}
+            {% endif %}
             {{ form.category | class:"form-control form-control-sm" }}
             {{ form.content | class:"form-control form-control-lg" }}
-            <div style="text-align: center"><input type="submit" value="提交" class="btn btn-success"></div>
+            <div style="text-align: center">
+                <button type="submit" class="btn btn-success">提交</button>
+                <a href="{% url 'article-detail' article.id %}" class="btn btn-secondary">取消</a>
+            </div>
         </div>
         {% endif %}
         <span>{{ error }}</span>
