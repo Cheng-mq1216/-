@@ -5,6 +5,9 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge"> {% block title %} {% endblock %}
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Font -->
+    <link href="https://fonts.googleapis.com/css?family=Comfortaa&display=swap" rel="stylesheet">
+
     <!-- CSS -->
     {% load static %}
     <link rel="stylesheet" href="https://cdn.bootcss.com/bootstrap/4.0.0/css/bootstrap.min.css">
@@ -14,30 +17,36 @@
     <script src="https://cdn.bootcss.com/jquery/3.2.1/jquery.slim.min.js"></script>
     <script src="https://cdn.bootcss.com/popper.js/1.12.9/umd/popper.min.js"></script>
     <script src="https://cdn.bootcss.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
-
 </head>
 
 <body>
     <nav class="navbar  navbar-expand-lg fixed-top navbar-dark bg-green ">
-        <h3 class="navbar-brand">平台</h3>
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarText"
-            aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarText">
-            <ul class="navbar-nav mr-auto">
-                <li class="nav-item active"><a class="nav-link glyphicon glyphicon-home " href="/"><i class="fa fa-home fa-fw"></i>首页<span class="sr-only">(current)</span></a>
-                </li>
-                {% if user.is_authenticated %}
-                <li class="nav-item"><a class="nav-link" href="{% url 'post-article' %}"><i class="fa fa-send fa-fw"></i>发帖</a></li>
-                <li class="nav-item"><a class="nav-link" href="{% url 'user-info' user.id %}"><i class="fa fa-user fa-fw"></i>用户</a></li>
-                <li class="nav-item"><a class="nav-link" href="{% url 'logout' %}"><i class="fa fa-sign-out fa-fw"></i>退出</a></li>
-                {% else %}
-                <li class="nav-item"><a class="nav-link" href="{% url 'login' %}"><i class="fa fa-sign-in fa-fw"></i>登录</a></li>
-                <li class="navs-item"><a class="nav-link" href="{% url 'register' %}"><i class="fa fa-registered fa-fw"></i>注册</a></li>
-                {% endif %}
-            </ul>
-        </div>
+        <h2 class="navbar-brand">Mind</h3>
+
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarText"
+                aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarText">
+                <ul class="navbar-nav mr-auto">
+                    <li class="nav-item active"><a class="nav-link glyphicon glyphicon-home " href="/"><i
+                                class="fa fa-home fa-fw"></i>首页<span class="sr-only">(current)</span></a>
+                    </li>
+                    {% if user.is_authenticated %}
+                    <li class="nav-item"><a class="nav-link" href="{% url 'post-article' %}"><i
+                                class="fa fa-send fa-fw"></i>发帖</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{% url 'user-info' user.id %}"><i
+                                class="fa fa-user fa-fw"></i>用户</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{% url 'logout' %}"><i
+                                class="fa fa-sign-out fa-fw"></i>退出</a></li>
+                    {% else %}
+                    <li class="nav-item"><a class="nav-link" href="{% url 'login' %}"><i
+                                class="fa fa-sign-in fa-fw"></i>登录</a></li>
+                    <li class="navs-item"><a class="nav-link" href="{% url 'register' %}"><i
+                                class="fa fa-registered fa-fw"></i>注册</a></li>
+                    {% endif %}
+                </ul>
+            </div>
     </nav>
     <div class="padding-content"></div>
     <!-- 头部结束 -->

@@ -3,7 +3,7 @@
 }
 
 .padding-content {
-    margin-top: 60px;
+    margin-top: 50px;
 }
 
 nav ul {
@@ -14,7 +14,7 @@ body {
     background-color: #f5f5f5;
 }
 
-
-/* nav {
-    opacity: 0;
-} */
+.navbar-brand {
+    font-family: 'Comfortaa', cursive;
+    margin-bottom: -.2rem;
+}
