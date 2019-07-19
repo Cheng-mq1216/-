@@ -13,7 +13,7 @@ data
 
 log
 /static
-/upload
+/uploads
 
 # sql dumps in production
 /dumps
