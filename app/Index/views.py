@@ -70,10 +70,20 @@ class RegisterFormView(FormView):
 class ArticlesList(ListView):
     """处理多篇文章的显示。"""
     model = Article
-    queryset = Article.objects.order_by('-time')
     context_object_name = 'articles'
     template_name = 'index.html'
     paginate_by = 5
+
+    def get_queryset(self, **kwargs):
+        queryset = Article.objects.order_by('-time')
+        for i in queryset:
+            i.md = markdown(i.content, extensions=[
+                'markdown.extensions.extra',
+                'markdown.extensions.codehilite',
+                'markdown.extensions.toc',
+            ])
+
+        return queryset
 
 
 class ArticleDetail(DetailView, FormMixin):

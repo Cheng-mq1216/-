@@ -35,16 +35,19 @@ a {
 }
 
 .card-text {
-    height: 70px;
+    height: 170px;
     overflow: hidden;
     text-overflow: ellipsis;
     display: -webkit-box;
-    -webkit-line-clamp: 3;
     -webkit-box-orient: vertical;
-    font-family: YouYuan;
+    font-family: 'Times New Roman', Times, serif;
 }
 
 #article-list h3 a:hover {
     color: #148a63;
     text-decoration: none;
+}
+
+img {
+    width: 100%;
 }
