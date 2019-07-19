@@ -27,9 +27,26 @@ from django.views.generic.edit import FormView, CreateView, DeleteView, UpdateVi
 
 # 导入Markdown渲染插件
 from markdown import markdown
+from markdown.extensions import Extension
 
 # 导入模型
 from .models import Article, Category, Comment
+
+
+class EscapeHtml(Extension):
+    def extendMarkdown(self, md):
+        md.preprocessors.deregister('html_block')
+        md.inlinePatterns.deregister('html')
+
+
+def safe_md(string):
+    return markdown(string,
+                    extensions=[
+                        'markdown.extensions.extra',
+                        'markdown.extensions.codehilite',
+                        'markdown.extensions.toc',
+                        EscapeHtml()
+                    ], safe_mode=True)
 
 
 class ArticleForm(forms.ModelForm):
@@ -77,11 +94,7 @@ class ArticlesList(ListView):
     def get_queryset(self, **kwargs):
         queryset = Article.objects.order_by('-time')
         for i in queryset:
-            i.md = markdown(i.content, extensions=[
-                'markdown.extensions.extra',
-                'markdown.extensions.codehilite',
-                'markdown.extensions.toc',
-            ])
+            i.md = safe_md(i.content)
 
         return queryset
 
@@ -104,12 +117,7 @@ class ArticleDetail(DetailView, FormMixin):
         context = super().get_context_data(**kwargs)
         context['comments'] = self.object.comment_set.all().order_by('-time')
         context['form'] = self.get_form()
-        context['md'] = markdown(self.object.content,
-                                 extensions=[
-                                     'markdown.extensions.extra',
-                                     'markdown.extensions.codehilite',
-                                     'markdown.extensions.toc',
-                                 ])
+        context['md'] = safe_md(self.object.content)
 
         return context
 
