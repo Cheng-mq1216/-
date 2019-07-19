@@ -61,6 +61,10 @@ article {
     font-size: 18px;
 }
 
+img {
+    width: 100%;
+}
+
 .hr {
     position: relative;
     text-align: center;
@@ -110,4 +114,13 @@ article {
 
 .container a:hover {
     color: gold;
+}
+
+/* .article-action {
+    align-content: center;
+} */
+
+.submit-comment {
+    display: flex;
+    justify-content: space-between;
 }

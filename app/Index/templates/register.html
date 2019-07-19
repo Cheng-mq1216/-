@@ -3,19 +3,57 @@
 {% endblock %} {% block css %} {% load static %}
 <link rel="stylesheet" href="{% static 'css/login.css' %}">{% endblock %} {% block main %}
 <div class="body">
-    <form action="/register/" method="post" class="form-signin">
-        {% csrf_token %}
-        <h1 class="h3 mb-3 font-weight-normal">注册账号</h1>
-        <!-- <input type="text" name="username" class="form-control" placeholder="用户名" aria-describedby="sizing-addon2" required autofocus>
-        <input type="password" name="password" class="form-control" placeholder="密码" aria-describedby="sizing-addon2" required>
-        <input type="password" name="password1" class="form-control" placeholder="重复密码" aria-describedby="sizing-addon2" required> -->
-        
-        {{ form.as_p }}
-        <br>
-        <div class="button">
-            <input type="submit" class="btn  btn-success " value="确认注册">
-            <input type="button" class="btn  btn-success " value="返回" onclick="location.href=('../login/')">
-        </div>
-    </form>
+  <form action="/register/" method="post" class="form-signin">
+    {% csrf_token %}
+    <h1 class="h3 mb-6 font-weight-normal">注册账号</h1>
+
+    {% load addclass %}
+
+    <!--  {{ form.error_messages.password_mismatch}} </div>
+            
+
+        {{ form.username | class:'form-control' }} {{ form.password1 | class:'form-control' }}{{ form.password2 | class:'form-control' }} -->
+
+        {% for field in form %}
+        <div class="form-group">
+
+          {% if field.errors %}
+          <div class="alert alert-danger">{{ field.errors }}</div>
+          {% endif %}
+
+          {{ field.label_tag}}
+          {{ field | class:'form-control'}}
+          {% if field.help_text %}
+          <small class="form-text text-muted">{{ field.help_text | safe }}</small>
+          {% endif %}
+        </div>  
+        {% endfor %}
+    <!-- <div class="form-group">
+      {{ form.username.errors }}
+      {{ form.username.label_tag}}
+      {{ form.username | class:'form-control'}}
+      {% if form.username.help_text %}
+      <small class="form-text text-muted">{{ form.username.help_text | safe }}</small>
+      {% endif %}
+    </div>
+    <div class="form-row">
+      {{ form.password1.errors }}
+      {{ form.password1.label_tag }} 
+      {{ form.password1 | class:'form-control'}}
+    </div>
+    <div class="form-row">
+      {{ form.password2.errors }}
+      {{ form.password2.label_tag }} {{ form.password2 | class:'form-control'}} -->
+
+    <!-- </div> -->
+    
+    
+
+    <br>
+    <div class="button">
+      <input type="submit" class="btn  btn-success " value="确认注册">
+      <input type="button" class="btn  btn-success " value="返回" onclick="location.href=('../login/')">
+    </div>
+  </form>
 </div>
 {% endblock %}

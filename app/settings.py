@@ -167,3 +167,4 @@ else:
 
     # Static files is in /dist. See docker-compose.yml
     STATIC_ROOT = os.path.join('/dist')
+SESSION_EXPIRE_AT_BROWSER_CLOSE = True

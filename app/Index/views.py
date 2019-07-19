@@ -82,9 +82,14 @@ class ArticleDetail(DetailView, FormMixin):
     FormMixin 处理留言的上传 。
     """
     model = Article
-    context_object_name = 'article'
+    # model.content = markdown(model.content)
+    context_object_name = 'article'  
     template_name = 'details.html'
     form_class = CommentForm
+
+    # def get_object(self, queryset=None):
+        
+
 
     def get_success_url(self):
         return reverse('article-detail', kwargs={'pk': self.object.pk})
@@ -93,6 +98,7 @@ class ArticleDetail(DetailView, FormMixin):
         context = super().get_context_data(**kwargs)
         context['comments'] = self.object.comment_set.all()
         context['form'] = self.get_form()
+        context['md'] = markdown(self.object.content)
         return context
 
     def post(self, request, *args, **kwargs):

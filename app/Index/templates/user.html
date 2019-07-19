@@ -1,35 +1,43 @@
 {% extends 'base.html' %} {% block title %}
 <title>用户</title>
-{% endblock %} {% block main %} {% block css %} {% load static %}
-<link rel="stylesheet" href="{% static 'css/user.css' %}"> {% endblock %}
+{% endblock %} {% block main %}
 
-<div class="bgc"></div>
+
+
 <!-- 用户项目开始 -->
-<div class="row">
+<br>
+<div class="row" style="width: 70%; border: 3px solid gold; margin: auto; height: 500px;">
     <div class="col-4">
-        <div class="list-group" id="list-tab" role="tablist">
-            <a class="list-group-item list-group-item-action active text" id="list-home-list" data-toggle="list" href="#list-home" role="tab" aria-controls="home">个人主页</a>
-            <a class="list-group-item list-group-item-action text" id="list-profile-list" data-toggle="list" href="#list-profile" role="tab" aria-controls="profile">文章显示</a>
-            <a class="list-group-item list-group-item-action text" id="list-messages-list" data-toggle="list" href="#list-messages" role="tab" aria-controls="messages">信息显示</a> {% if user.is_authenticated %}
-            <a class="list-group-item list-group-item-action text" id="list-settings-list" data-toggle="list" href="#list-settings" role="tab" aria-controls="settings">个人设置</a> {% endif %}
+        <div class="list-group" id="list-tab" role="tablist" style="text-align: center; margin-top: 50%">
+            <a class="list-group-item list-group-item-action active text" id="list-home-list" data-toggle="list"
+                href="#list-home" role="tab" aria-controls="home">个人主页</a>
+            <a class="list-group-item list-group-item-action text" id="list-profile-list" data-toggle="list"
+                href="#list-profile" role="tab" aria-controls="profile">文章显示</a>
+            <a class="list-group-item list-group-item-action text" id="list-messages-list" data-toggle="list"
+                href="#list-messages" role="tab" aria-controls="messages">信息显示</a> {% if user.is_authenticated %}
+            <a class="list-group-item list-group-item-action text" id="list-settings-list" data-toggle="list"
+                href="#list-settings" role="tab" aria-controls="settings">个人设置</a> {% endif %}
         </div>
     </div>
-    <div class="col-8 border border-success">
-        <div class="tab-content" id="nav-tabContent">
-            <div class="tab-pane fade show active" id="list-home" role="tabpanel" aria-labelledby="list-home-list">用户标签，个性化留言</div>
-            <div class="thiscss tab-pane fade pre-scrollable" id="list-profile" role="tabpanel" aria-labelledby="list-profile-list">
-                {% for i in articles %}
-                <sapn><a href="{% url 'article-detail' i.id %} ">{{i.title}}</a> </sapn>
-                <br> {% endfor %}</div>
-            <div class="tab-pane fade" id="list-messages" role="tabpanel" aria-labelledby="list-messages-list">用户名：{{ user.name }}</div>
-            {% if user.is_authenticated %}
-            <div class="tab-pane fade" id="list-settings" role="tabpanel" aria-labelledby="list-settings-list">
-                <p>用户名修改：</p>
-                <p>密码修改：</p>
-            </div>
-            {% endif %}
+    <!-- <div class="col-8 border border-success"> -->
+    <div class="tab-content" id="nav-tabContent">
+        <div class="tab-pane fade show active" id="list-home" role="tabpanel" aria-labelledby="list-home-list">
+            用户标签，个性化留言</div>
+        <div class="thiscss tab-pane fade pre-scrollable" id="list-profile" role="tabpanel"
+            aria-labelledby="list-profile-list">
+            {% for i in articles %}
+            <sapn><a href="{% url 'article-detail' i.id %} ">{{i.title}}</a> </sapn>
+            <br> {% endfor %}</div>
+        <div class="tab-pane fade" id="list-messages" role="tabpanel" aria-labelledby="list-messages-list">
+            用户名：{{ user.username }}</div>
+        {% if user.is_authenticated %}
+        <div class="tab-pane fade" id="list-settings" role="tabpanel" aria-labelledby="list-settings-list">
+            <p>用户名修改：</p>
+            <p>密码修改：</p>
         </div>
+        {% endif %}
     </div>
 </div>
+<!-- </div> -->
 <!-- 用户项目结束 -->
 {% endblock %}
