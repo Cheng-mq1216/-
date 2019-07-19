@@ -29,6 +29,7 @@ class Article(models.Model):
     author = models.ForeignKey(
         User, verbose_name="作者", on_delete=models.CASCADE)
     time = models.DateTimeField(auto_now_add=True, verbose_name="添加时间")
+    update_time = models.DateTimeField(auto_now=True, verbose_name="修改时间")
     content = MDTextField(verbose_name="内容")
 
     def __str__(self):

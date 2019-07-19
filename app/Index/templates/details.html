@@ -8,15 +8,15 @@
     <!--文章开始-->
     <div class="jumbotron jumbotron-ad hidden-print">
         <div class="container">
-            <h1> {{article.title}} </h1><span
-            class="badge badge-light">{{article.category.name}}</span>
+            <h1> {{article.title}} </h1><span class="badge badge-light">{{article.category.name}}</span>
             <p><a href="{% url 'user-info' article.author.id %}">{{  article.author.username }} </a> </p>
         </div>
     </div>
     <div class="content-underlay"></div>
     <div class="container">
         <article class="page-content"> {{ md | safe }}
-            <div class="right-text">发表于：{{article.time}}</div>
+            <div class="right-text" data-toggle="popover" data-placement="bottom" data-container="body"
+                data-content="最近修改于：{{ article.update_time }}">发表于：{{article.time}}</div>
         </article>
         {% if user == article.author %}
         <div class="center-op">
@@ -83,6 +83,12 @@
         </div>
     </div>
 </div>
+
+<script>
+    $(function () {
+        $('[data-toggle="popover"]').popover()
+    });
+</script>
 
 <!--留言结束-->
 
