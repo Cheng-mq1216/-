@@ -8,57 +8,49 @@
     <!--文章开始-->
     <div class="jumbotron jumbotron-ad hidden-print">
         <div class="container">
-            <h1> {{article.title}} </h1>
+            <h1> {{article.title}} </h1><span
+            class="badge badge-light">{{article.category.name}}</span>
             <p><a href="{% url 'user-info' article.author.id %}">{{  article.author.username }} </a> </p>
-            <p>
-                <span> {{article.time}}</span>
-                <span class="badge badge-light">{{article.category.name}}</span>
-            </p>
         </div>
     </div>
     <div class="content-underlay"></div>
     <div class="container">
-        <article class="page-content"> {{ md | safe }}</article>
-        <div class="hr margin-top-xl">
+        <article class="page-content"> {{ md | safe }}
+            <div class="right-text">发表于：{{article.time}}</div>
+        </article>
+        {% if user == article.author %}
+        <div class="center-op">
+            <!-- 删除文章 -->
+            <form action="{% url 'article-delete' article.id %}" method="post" style="display: inline">
+                {% csrf_token %}
+                <input type="submit" class="btn btn-link" value="删除文章">
+            </form>
+            <!-- 编辑文章 -->
+            <a href="{% url 'article-update' article.id %}"><input type="submit" class="btn btn-link" value="编辑文章"></a>
+        </div>
+        {% endif %}
+        <div class="hr margin-xl">
             <span class="hr-text text-xl text-muted">end</span>
         </div>
     </div>
 
-
-
     <!--文章结束-->
     <div class="container">
-        <div class="btn-group" role="group" aria-label="Basic example">
-            {% if user == article.author %}
-            <!-- 删除文章 -->
-            <form action="{% url 'article-delete' article.id %}" method="post">
-                {% csrf_token %}
-                <input type="submit" class="btn btn-success" value="删除文章">
-            </form>
-
-            <!-- 编辑文章 -->
-            <a href="{% url 'article-update' article.id %}"><input type="submit" class="btn btn-success "
-                    value="编辑文章"></a>
-            {% endif %}
-        </div>
 
         <!--留言开始-->
-        <!-- {% load addclass %}  -->
-        <input type="submit" value="想留言吗？" class="btn btn-success" data-toggle="collapse" href="#collapseExample"
-            role="button" aria-expanded="false" aria-controls="collapseExample" />
         <form action="{% url 'article-detail' article.id %}" method="POST">
-            <div class="collapse" id="collapseExample">
-                <div class="card card-body">
-                    {% if user.is_authenticated %}
-                    {% csrf_token %}
-                    <div class="sumbit-comment">
-                        {{ form }}
-                        <input class="btn btn-primary" type="submit" value="提交留言" />
-                    </div>
-                    {% else %}
-                    您还没登录呢？想得美。
-                    {% endif %}
+            <div class="card card-body">
+                {% if user.is_authenticated %}
+                {% csrf_token %}
+                <div class="sumbit-comment">
+                    {% load addclass %}
+                    {{ form.content | class:"form-control" }}
+                    <input class="btn btn-primary" type="submit" value="提交留言" />
                 </div>
+                {% else %}
+                <p><span>您还没有登录。请您</span><a href="{% url 'login' %}">登录</a>
+                    <span>后再留言。</span></p>
+                {% endif %}
             </div>
         </form>
     </div>
@@ -67,23 +59,23 @@
     <div class="container">
         <div class="container">
             <div class="bottom">
-                <button type="button" class="btn bg-green">全部留言
-                    <span class="badge badge-light">{{ comments | length }}</span>
-                </button>
+                <span>全部留言</span>
+                <span class="badge badge-light">{{ comments | length }}</span>
             </div>
+
             {% for i in comments %}
-            <div class="card border-success mb-3">
-                <div class="card-header bg-transparent border-success">
-                    <span>{{i.time}}</span>{% if user == i.author %}
+            <div class="card mb-3">
+
+                <div class="card-body">
+                    <p class="card-text">{{i.content}} </p>
+                    <p class="right-text"><a href="{% url 'user-info' i.id %}">{{i.author}}</a>
+                        <span> 发布于 {{i.time}}</span></p>
+                    {% if user == i.author %}
                     <form action="{% url 'comment-delete' i.id %}" method="POST">
                         {% csrf_token %}
-                        <input type="submit" value="删除留言"> {% endif %}
+                        <button type="submit" class="btn btn-danger btn-sm">删除留言</button>
                     </form>
-                </div>
-
-                <div class="card-body text-success">
-                    <h5 class="card-title">{{i.author}}</h5>
-                    <p class="card-text">{{i.content}}</p>
+                    {% endif %}
                 </div>
             </div>
             {% endfor %}

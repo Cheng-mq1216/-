@@ -94,18 +94,20 @@ STATICFILES_DIRS = (
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'uploads')
 
-LANGUAGE_CODE = 'zh-hans'
+LANGUAGE_CODE = 'zh-Hans'
+
+TIME_ZONE = 'Asia/Shanghai'
+
 
 USE_TZ = False
 USE_I18N = True
 USE_L10N = True
-USE_TZ = True
 
 MDEDITOR_CONFIGS = {
     'default': {
         'width': '90% ',  # Custom edit box width
         'heigth': 500,  # Custom edit box height
-        'toolbar': ["undo", "redo", "watch" # "|",
+        'toolbar': ["undo", "redo", "watch", "image"  # "|",
                     # "bold", "del", "italic", "quote", "ucwords", "uppercase", "lowercase", "|",
                     # "h1", "h2", "h3", "h5", "h6", "|",
                     # "list-ul", "list-ol", "hr", "|",
@@ -138,7 +140,6 @@ MDEDITOR_CONFIGS = {
 if DEBUG:
     INSTALLED_APPS.append('debug_toolbar')
     STATIC_ROOT = os.path.join(BASE_DIR, 'dist')
-    TIME_ZONE = 'Asia/ShangHai'
 
     DATABASES = {
         'default': {

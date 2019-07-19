@@ -92,7 +92,7 @@ class ArticleDetail(DetailView, FormMixin):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['comments'] = self.object.comment_set.all()
+        context['comments'] = self.object.comment_set.all().order_by('-time')
         context['form'] = self.get_form()
         context['md'] = markdown(self.object.content,
                                  extensions=[
@@ -139,7 +139,7 @@ class ArticleUpdateView(UpdateView, LoginRequiredMixin):
     """处理更新Article时的表单"""
     model = Article
     success_url = '/'
-    fields = ['content']
+    fields = ['content', 'category']
     template_name = 'update.html'
 
 
