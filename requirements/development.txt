@@ -2,6 +2,6 @@
 
 autopep8==1.4.4
 pylint==2.3.1
-django-debug-toolbar==2.0
+django-debug-toolbar==2.2.1
 pylint-django
 Faker==1.0.7
